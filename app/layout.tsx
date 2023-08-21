@@ -21,18 +21,16 @@ export const metadata: Metadata = {
   description: "오프라인 마피아 게임 진행 도우미",
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
       <body
-        className={`${pretendard.variable} ${serif.variable} font-pretendard flex min-h-screen flex-col items-center gap-8 p-24 bg-black text-gray-50`}
+        className={`${pretendard.variable} ${serif.variable} font-pretendard min-h-screen  bg-black text-gray-50`}
       >
         {children}
       </body>
     </html>
   )
 }
+
+export default RootLayout

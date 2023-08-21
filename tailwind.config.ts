@@ -13,7 +13,7 @@ const config: Config = {
         serif: ["var(--font-serif)"],
       },
       colors: {
-        orage: "#FF782C",
+        red: "#D50000",
         black: "#201C1A",
       },
     },
