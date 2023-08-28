@@ -2,6 +2,7 @@ import "./globals.css"
 import type { Metadata } from "next"
 import { Noto_Serif_KR } from "next/font/google"
 import localFont from "next/font/local"
+import RecoilRootWrapper from "@/providers/RecoilRootWrapper"
 
 const pretendard = localFont({
   src: "./PretendardVariable.woff2",
@@ -24,11 +25,13 @@ export const metadata: Metadata = {
 function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
-      <body
-        className={`${pretendard.variable} ${serif.variable} font-pretendard min-h-screen  bg-black text-gray-50`}
-      >
-        {children}
-      </body>
+      <RecoilRootWrapper>
+        <body
+          className={`${pretendard.variable} ${serif.variable} leading-normal font-pretendard min-h-screen bg-black text-gray-50`}
+        >
+          {children}
+        </body>
+      </RecoilRootWrapper>
     </html>
   )
 }

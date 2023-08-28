@@ -1,17 +1,41 @@
+import Link from "next/link"
+
 interface Props {
-  isActive: boolean
-  onClick: () => void
   children: React.ReactNode
+  layoutMode?: "inline" | "fullWidth"
+  isActive?: boolean
+  to?: string
+  onClick?: () => void
 }
 
-function Button({ isActive, onClick, children }: Props) {
+function Button({
+  layoutMode = "fullWidth",
+  isActive = true,
+  children,
+  to,
+  onClick,
+}: Props) {
+  if (to) {
+    return (
+      <Link
+        href={to}
+        className={`w-full h-[48px] bg-red text-gray-50 rounded-lg text-xl font-black px-4 transition  disabled:bg-slate-400 flex justify-center items-center ${
+          isActive && "hover:brightness-105"
+        } ${layoutMode === "inline" && "max-w-[300px]"}`}
+        onClick={onClick}
+      >
+        {children}
+      </Link>
+    )
+  }
+
   return (
     <button
       disabled={!isActive}
-      onClick={onClick}
-      className={`max-w-[300px] w-11/12 h-[48px] bg-red text-gray-50 rounded-lg text-xl font-black px-4 transition  disabled:bg-slate-400 ${
+      className={`w-full h-[48px] bg-red text-gray-50 rounded-lg text-xl font-black px-4 transition  disabled:bg-gray-400 ${
         isActive && "hover:brightness-105"
-      }`}
+      } ${layoutMode === "inline" && "max-w-[300px]"}`}
+      onClick={onClick}
     >
       {children}
     </button>
