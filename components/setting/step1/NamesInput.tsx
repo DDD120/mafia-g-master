@@ -1,12 +1,12 @@
 import CreatableSelect from "react-select/creatable"
 import { FaBan, FaCheck } from "react-icons/fa"
-import { Option, selectThema } from "@/app/setting/page"
 import { KeyboardEvent } from "react"
 import { MultiValue, InputProps, components, GroupBase } from "react-select"
+import { Option, selectThema } from "@/lib/setting"
 
 interface Props {
   names: readonly Option<string>[]
-  usersCount: number
+  numberOfUsers: number
   isRequired: boolean
   handleKeyDown: (event: KeyboardEvent) => void
   handleNamesChange: (newValue: MultiValue<Option<string>>) => void
@@ -22,7 +22,7 @@ function Input(
 
 function NamesInput({
   names,
-  usersCount,
+  numberOfUsers,
   isRequired,
   handleKeyDown,
   handleNamesChange,
@@ -32,7 +32,7 @@ function NamesInput({
   return (
     <>
       <p className="text-xl flex items-center">
-        참여자의 이름을 적어주세요 ({names.length}/{usersCount})
+        참여자의 이름을 적어주세요 ({names.length}/{numberOfUsers})
         {isRequired ? (
           <FaCheck color="lightgreen" className="ml-2  translate-y-[0.5px]" />
         ) : (

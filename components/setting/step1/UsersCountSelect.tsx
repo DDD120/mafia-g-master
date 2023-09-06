@@ -1,7 +1,7 @@
 "use client"
 
-import { Option, selectThema } from "@/app/setting/page"
 import { colors } from "@/lib/colors"
+import { Option, selectThema } from "@/lib/setting"
 import Select, { GroupBase, OptionsOrGroups } from "react-select"
 
 interface Props {

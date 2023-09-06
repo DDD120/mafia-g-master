@@ -2,13 +2,16 @@
 
 import { createContext, useContext } from "react"
 import { useInterpret } from "@xstate/react"
+import { InterpreterFrom } from "xstate"
 import mafiaMachine from "@/store/mafia"
 
 interface Props {
   children: React.ReactNode
 }
 
-export const MafiaContext = createContext({})
+export const MafiaContext = createContext(
+  {} as InterpreterFrom<typeof mafiaMachine>
+)
 
 export function MafiaProvider({ children }: Props) {
   const mafiaService = useInterpret(mafiaMachine)
