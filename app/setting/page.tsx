@@ -1,5 +1,5 @@
 import BasicLayout from "@/components/BasicLayout.tsx"
-import SettingContent from "@/components/setting/step1/SettingContent"
+import SettingContent from "@/components/setting/SettingContent"
 
 function Setting() {
   return (

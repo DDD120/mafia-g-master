@@ -8,7 +8,7 @@ interface Context {
 }
 
 type Events = {
-  type: "STEP2"
+  type: "PLAYING"
   users: string[]
   rols: Rols[]
 }
@@ -29,21 +29,14 @@ const mafiaeMachine = createMachine(
     },
     states: {
       setting: {
-        initial: "step1",
-        states: {
-          step1: {
-            on: {
-              STEP2: {
-                target: "step2",
-                actions: ["setUsers", "setRols"],
-              },
-            },
-          },
-          step2: {
-            type: "final",
+        on: {
+          PLAYING: {
+            target: "playing",
+            actions: ["setUsers", "setRols"],
           },
         },
       },
+      playing: {},
     },
   },
   {

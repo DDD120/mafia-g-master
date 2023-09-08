@@ -1,6 +1,6 @@
 "use client"
 
-import Button from "@/components/Button/Button"
+import Button from "@/components/button/Button"
 import AddJobSelect from "./AddJobSelect"
 import NamesInput from "./NamesInput"
 import UsersCountSelect from "./UsersCountSelect"
@@ -54,7 +54,7 @@ function SettingContent() {
     const rols = ["mafia", "normal"]
     if (selectedPolice) rols.push("police")
     if (selectedDocter) rols.push("docter")
-    mafiaServices.send("STEP2", {
+    mafiaServices.send("PLAYING", {
       users: names.map((name) => name.value),
       rols,
     })
@@ -87,7 +87,11 @@ function SettingContent() {
         />
       </div>
       <div className="w-full">
-        <Button onClick={onButtonClick} isActive={isRequired}>
+        <Button
+          to="/night?days=1"
+          onClick={onButtonClick}
+          isActive={isRequired}
+        >
           설정 완료
         </Button>
       </div>
