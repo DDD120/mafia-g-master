@@ -1,4 +1,4 @@
-import BasicLayout from "@/components/BasicLayout.tsx"
+import BasicLayout from "@/components/BasicLayout"
 import SettingContent from "@/components/setting/SettingContent"
 
 function Setting() {

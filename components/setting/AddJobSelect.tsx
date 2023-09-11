@@ -3,12 +3,12 @@ import { SetStateAction, Dispatch } from "react"
 interface Props {
   numberOfUsers: number
   setSelectedPolice: Dispatch<SetStateAction<boolean>>
-  setSelectedDocter: Dispatch<SetStateAction<boolean>>
+  setSelectedDoctor: Dispatch<SetStateAction<boolean>>
 }
 
 function AddJobSelect({
   numberOfUsers,
-  setSelectedDocter,
+  setSelectedDoctor,
   setSelectedPolice,
 }: Props) {
   return (
@@ -32,7 +32,7 @@ function AddJobSelect({
           name="의사"
           id="doctor"
           disabled={numberOfUsers < 8}
-          onChange={(e) => setSelectedDocter(e.target.checked)}
+          onChange={(e) => setSelectedDoctor(e.target.checked)}
         />
         <label className="text-xl cursor-pointer" htmlFor="doctor">
           의사

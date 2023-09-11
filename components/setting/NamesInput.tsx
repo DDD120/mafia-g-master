@@ -36,7 +36,7 @@ function NamesInput({
         {isRequired ? (
           <FaCheck color="lightgreen" className="ml-2  translate-y-[0.5px]" />
         ) : (
-          <FaBan color="red" className="ml-2  translate-y-[0.5px]" />
+          <FaBan color="red" className="ml-2 translate-y-[0.5px]" />
         )}
       </p>
       <CreatableSelect

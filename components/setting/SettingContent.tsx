@@ -17,7 +17,7 @@ function SettingContent() {
   const [names, setNames] = useState<readonly Option<string>[]>([])
   const [isRequired, setIsRequired] = useState(false)
   const [selectedPolice, setSelectedPolice] = useState(false)
-  const [selectedDocter, setSelectedDocter] = useState(false)
+  const [selectedDoctor, setSelectedDoctor] = useState(false)
   const mafiaServices = useMafiaContext()
 
   const handleKeyDown: KeyboardEventHandler = (event) => {
@@ -51,12 +51,12 @@ function SettingContent() {
   }
 
   const onButtonClick = () => {
-    const rols = ["mafia", "normal"]
-    if (selectedPolice) rols.push("police")
-    if (selectedDocter) rols.push("docter")
+    const roles = ["mafia", "normal"]
+    if (selectedPolice) roles.push("police")
+    if (selectedDoctor) roles.push("doctor")
     mafiaServices.send("PLAYING", {
       users: names.map((name) => name.value),
-      rols,
+      roles,
     })
   }
 
@@ -83,15 +83,11 @@ function SettingContent() {
         <AddJobSelect
           numberOfUsers={numberOfUsers}
           setSelectedPolice={setSelectedPolice}
-          setSelectedDocter={setSelectedDocter}
+          setSelectedDoctor={setSelectedDoctor}
         />
       </div>
       <div className="w-full">
-        <Button
-          to="/night?days=1"
-          onClick={onButtonClick}
-          isActive={isRequired}
-        >
+        <Button to="/night/1" onClick={onButtonClick} isActive={isRequired}>
           설정 완료
         </Button>
       </div>

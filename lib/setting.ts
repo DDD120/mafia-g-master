@@ -29,3 +29,39 @@ export const selectThema = (theme: Theme) => ({
     primary: "#FF5252",
   },
 })
+
+type UserNumberByRole = {
+  [key: number]: {
+    [key: string]: number
+  }
+}
+
+export const userNumberByRole: UserNumberByRole = {
+  5: {
+    mafia: 1,
+  },
+  6: {
+    mafia: 1,
+    doctor: 1,
+  },
+  7: {
+    mafia: 1,
+    doctor: 1,
+    police: 1,
+  },
+  8: {
+    mafia: 2,
+    doctor: 1,
+    police: 1,
+  },
+  9: {
+    mafia: 2,
+    doctor: 1,
+    police: 1,
+  },
+  10: {
+    mafia: 3,
+    doctor: 1,
+    police: 1,
+  },
+}
