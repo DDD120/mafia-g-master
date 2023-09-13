@@ -1,20 +1,18 @@
-"use client"
+import BasicLayout from "@/components/BasicLayout"
+import DayContent from "@/components/day/DayContent"
+import { daysInKorean } from "@/lib/days"
 
-import { useMafiaContext } from "@/providers/MafiaProvider"
-import { useSelector } from "@xstate/react"
+interface Props {
+  params: {
+    days: number
+  }
+}
 
-function Day() {
-  const mafiaServices = useMafiaContext()
-  const { mafia, citizen } = useSelector(
-    mafiaServices,
-    (state) => state.context
-  )
-  console.log(mafia)
+function Day({ params: { days } }: Props) {
   return (
-    <div>
-      <p>{mafia.alive}</p>
-      <p>{citizen.normal.alive}</p>
-    </div>
+    <BasicLayout headText={`${daysInKorean[days]} 낮`}>
+      <DayContent />
+    </BasicLayout>
   )
 }
 
