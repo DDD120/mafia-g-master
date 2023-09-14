@@ -1,3 +1,4 @@
+import CheckboxInput from "@/components/CheckboxInput"
 import Script from "@/components/Script"
 import { userNumberByRole } from "@/lib/setting"
 import { ChangeEvent } from "react"
@@ -43,29 +44,20 @@ function RoleSelectionInput({
             <FaCheck color="lightgreen" className="ml-2  translate-y-[0.5px]" />
           )}
         </h3>
-        <p>
+        <ul>
           {users.map((user) => (
-            <label
+            <CheckboxInput
               key={user}
-              htmlFor={`${role}-${user}`}
-              className="flex items-center p-2 cursor-pointer"
-            >
-              <input
-                disabled={
-                  (selectedUsers.includes(user) &&
-                    !usersByRole.includes(user)) ||
-                  (!usersByRole.includes(user) && currentUser >= personnel)
-                }
-                onChange={onChange}
-                type="checkbox"
-                id={`${role}-${user}`}
-                value={user}
-                className="accent-red mr-2 w-4 h-4"
-              />
-              {user}
-            </label>
+              value={user}
+              id={`${role}-${user}`}
+              disabled={
+                (selectedUsers.includes(user) && !usersByRole.includes(user)) ||
+                (!usersByRole.includes(user) && currentUser >= personnel)
+              }
+              onChange={onChange}
+            />
           ))}
-        </p>
+        </ul>
       </div>
     </div>
   )
