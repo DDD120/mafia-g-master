@@ -1,17 +1,20 @@
 import { InputHTMLAttributes } from "react"
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
+  type: "checkbox" | "radio"
+  name: string
   value: string
   id: string
 }
 
-function CheckboxInput({ value, id, ...rest }: Props) {
+function SelectInput({ name, value, type, id, ...rest }: Props) {
   return (
     <li>
       <label htmlFor={id} className="flex items-center p-2 cursor-pointer">
         <input
           {...rest}
-          type="checkbox"
+          name={name}
+          type={type}
           id={id}
           value={value}
           className="accent-red mr-2 w-4 h-4"
@@ -22,4 +25,4 @@ function CheckboxInput({ value, id, ...rest }: Props) {
   )
 }
 
-export default CheckboxInput
+export default SelectInput

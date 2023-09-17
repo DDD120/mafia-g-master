@@ -1,4 +1,4 @@
-import CheckboxInput from "@/components/CheckboxInput"
+import SelectInput from "@/components/SelectInput"
 import Script from "@/components/Script"
 import { userNumberByRole } from "@/lib/setting"
 import { ChangeEvent } from "react"
@@ -46,8 +46,10 @@ function RoleSelectionInput({
         </h3>
         <ul>
           {users.map((user) => (
-            <CheckboxInput
+            <SelectInput
               key={user}
+              type="checkbox"
+              name={role}
               value={user}
               id={`${role}-${user}`}
               disabled={
