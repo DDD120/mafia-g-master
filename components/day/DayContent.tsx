@@ -1,24 +1,15 @@
-"use client"
-
-import { useState } from "react"
 import Debate from "./Debate"
 import Exile from "./Exile"
+import { DayStep } from "@/app/day/[days]/page"
 
-export type DayStep = "debate" | "exile"
+interface Props {
+  step: DayStep
+  days: number
+}
 
-function DayContent() {
-  const [component, setComponent] = useState<DayStep>("debate")
-
-  const nextStep = (component: DayStep) => {
-    setComponent(component)
-  }
-
-  const stepMap = {
-    debate: <Debate nextStep={nextStep} />,
-    exile: <Exile />,
-  }
-
-  return stepMap[component]
+function DayContent({ step, days }: Props) {
+  if (step === "debate") return <Debate days={days} />
+  if (step === "exile") return <Exile />
 }
 
 export default DayContent

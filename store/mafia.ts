@@ -63,12 +63,12 @@ const mafiaeMachine = createMachine(
       ], //temp
       roles: ["mafia", "doctor", "police"], //temp
       mafia: {
-        alive: [],
+        alive: ["사용자1"],
         died: [],
       },
       citizen: {
         normal: {
-          alive: [],
+          alive: ["사용자2", "사용자3", "사용자4"],
           died: [],
         },
         doctor: {

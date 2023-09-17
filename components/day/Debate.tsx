@@ -1,13 +1,12 @@
 import Script from "../Script"
 import Button from "../button/Button"
 import CountdownTimer from "./CountdownTimer"
-import { DayStep } from "./DayContent"
 
 interface Props {
-  nextStep: (component: DayStep) => void
+  days: number
 }
 
-function Debate({ nextStep }: Props) {
+function Debate({ days }: Props) {
   return (
     <>
       <div className="h-full flex flex-col">
@@ -17,7 +16,7 @@ function Debate({ nextStep }: Props) {
         </Script>
         <CountdownTimer />
       </div>
-      <Button onClick={() => nextStep("exile")}>토론 완료</Button>
+      <Button to={`/day/${days}?step=exile`}>토론 완료</Button>
     </>
   )
 }
