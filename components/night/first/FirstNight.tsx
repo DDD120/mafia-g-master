@@ -115,7 +115,11 @@ function FirstNight() {
         </div>
       </div>
       <div className="shrink-0">
-        <Button to="/day/1?step=debate" isActive={isRequired} onClick={handleButtonClick}>
+        <Button
+          to="/day/1?step=debate"
+          isActive={isRequired}
+          onClick={handleButtonClick}
+        >
           역할 선정 완료
         </Button>
       </div>
