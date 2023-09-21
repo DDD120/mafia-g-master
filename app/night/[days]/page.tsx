@@ -1,4 +1,7 @@
+import BasicLayout from "@/components/BasicLayout"
+import AfterFirstNight from "@/components/night/afterFirst/AfterFirstNight"
 import FirstNight from "@/components/night/first/FirstNight"
+import { daysInKorean } from "@/lib/days"
 
 interface Props {
   params: {
@@ -7,8 +10,11 @@ interface Props {
 }
 
 function Night({ params: { days } }: Props) {
-  if (Number(days) === 1) return <FirstNight />
-  return <div>Night</div>
+  return (
+    <BasicLayout headText={`${daysInKorean[+days]} 밤`}>
+      {Number(days) === 1 ? <FirstNight /> : <AfterFirstNight />}
+    </BasicLayout>
+  )
 }
 
 export default Night

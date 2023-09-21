@@ -9,7 +9,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 
 function SelectInput({ name, value, type, id, ...rest }: Props) {
   return (
-    <li>
+    <li className="list-none">
       <label htmlFor={id} className="flex items-center p-2 cursor-pointer">
         <input
           {...rest}

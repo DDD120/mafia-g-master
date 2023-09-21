@@ -6,6 +6,7 @@ import { useSelector } from "@xstate/react"
 
 function useAliveUsers() {
   const [aliveUsers, setAliveUsers] = useState<string[]>([])
+  const [aliveCitizens, setAliveCitizens] = useState<string[]>([])
   const mafiaService = useMafiaContext()
   const { alive: aliveMafia } = useSelector(
     mafiaService,
@@ -31,9 +32,17 @@ function useAliveUsers() {
       ...aliveDoctor,
       ...alivePolice,
     ])
+    setAliveCitizens([...aliveNormal, ...aliveDoctor, ...alivePolice])
   }, [aliveMafia, aliveNormal, aliveDoctor, alivePolice])
 
-  return aliveUsers
+  return {
+    aliveUsers,
+    aliveCitizens,
+    aliveMafia,
+    aliveNormal,
+    aliveDoctor,
+    alivePolice,
+  }
 }
 
 export default useAliveUsers

@@ -10,7 +10,7 @@ import { useParams } from "next/navigation"
 
 function Exile() {
   const mafiaServices = useMafiaContext()
-  const aliveUsers = useAliveUsers()
+  const { aliveUsers } = useAliveUsers()
   const [selectedUser, setSelectedUesr] = useState(aliveUsers[0])
   const { days } = useParams()
 

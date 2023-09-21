@@ -9,7 +9,6 @@ import {
   Dispatch,
   SetStateAction,
 } from "react"
-import BasicLayout from "@/components/BasicLayout"
 import { useMafiaContext } from "@/providers/MafiaProvider"
 import { useSelector } from "@xstate/react"
 import Button from "@/components/button/Button"
@@ -69,7 +68,7 @@ function FirstNight() {
   }, [users.length, mafiaUsers, doctorUsers, policeUsers])
 
   return (
-    <BasicLayout headText="첫번째 밤">
+    <>
       <div className="scrollbar-hide overflow-y-auto">
         <div className="flex flex-col gap-4">
           <RoleSelectionInput
@@ -123,7 +122,7 @@ function FirstNight() {
           역할 선정 완료
         </Button>
       </div>
-    </BasicLayout>
+    </>
   )
 }
 
