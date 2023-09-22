@@ -31,24 +31,39 @@ interface PlayingEvent {
   users: string[]
   roles: Roles[]
 }
-interface DayEvent {
-  type: "DAY"
+interface FisrtDayEvent {
+  type: "FIRSTDAY"
   mafia: string[]
   normal: string[]
   doctor?: string[]
   police?: string[]
 }
 
+interface AfterFirstDayEvent {
+  type: "AFTERFIRSTDAY"
+  maifaPointOut: string
+  doctorPointOut?: string
+}
+
 interface NightEvent {
-  type: "AFTERFISRT"
+  type: "NIGHT"
   exiledUser: string
 }
 
-type Events = PlayingEvent | DayEvent | NightEvent
+interface AfterFirstNight {
+  type: "AFTERFIRSTNIGHT"
+}
+
+type Events =
+  | PlayingEvent
+  | FisrtDayEvent
+  | AfterFirstDayEvent
+  | NightEvent
+  | AfterFirstNight
 
 const mafiaeMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QFsCGAzAlqgdLMALgZgHZQDEACgDICCAmgJIByA4gNoAMAuoqAA4B7WJmKCSfEAA9EARgBssnAGZVqgKwAmeQHZ1+zjoA0IAJ6JtOnDoAcs7QBZ1yzsp075AX08m0WXPwANqimpFA4JJhQABYE5AAiDFy8SCBCImISqTII8pyaOJqaAJxF6vLqTjqa6ibmCMoOBZzymg42drLFLXrq3r4Y2DhBIWE4ECHktABiACoAogBK04wAyouzyZLpopjikjlqOPJONsrlspycDg6NdXLqnCpqmueV6rbFNt4+ICSCEDgkj82G2wl2+2yiAAtPJ7ghoW0cFcUai0Tp+iAQbh8EQwmCMnssqAck14S4HMjqsVZLd7Hl5F5ftjhsFQmQCRDidILNVjqdzoorjc7mZEPJlDgFIydJwafSMczBgE2WNIjECJzMgdEMpNE8TuozhdhbcHPDNDpKYazjplGdZPbGZiWSN2eF1bEcFgAE6wTWpHbaqENeQ2flGwWXa5m+FNJ7KewOYr2hz2WQ6WQu5Ws0ZkCJRL0YAhgH3TTB+gMCcHBkm6u0R41CmOi+rKRQ4Oxtbr5Q2GbP+XPu8YhLVEnW5YrqTtqZTFRRTuU2eGyOw4Bw6GnyYo3dpnNoDoZutWFgg4Yul8uViJgADuAAJ-agS-fZGPIXWEE0lDao6bW4gNzhom3apummY-J4QA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QFsCGAzAlqgdLMALgZgHZQDEACgDICCAmgJIByA4gNoAMAuoqAA4B7WJmKCSfEAA9EARgBssnAGZVqzsoDsAJgCc83QBYANCACeibYcM5rm3bMPbOzzfIAcAX0+m0WXPwANqhmpFA4JJhQABYE5ABijABKAMoAKgAiDFy8SCBCImISeTIIAKzyNk6anDq69rK69aYWCMqNtk1Nlbru2to6yt6+GNg4QSFhEVGx5LTxaQCiSYmpmdk8kgWimOKSpRVVA7V6DU2aLYiGsmU4slZNhpyc8s-ujsMgfmMToWQ4EBCcwWy1W6WYjFYAAk0jktsIdnsSog1DhKmU+ppZJpDO5au5LggbpwVGplJwmu53u95N4fCASIIIHBJN9UPDCrtiqBSgBaeSE3lWT5svCEYhkDmI7nSK7aQnaPE4TTKXRlex45weNwi0YBYJ-KBSor7SyaTRowwYgbY3H4wnyZR3eQu+RlQyPCmcLz00W-KaRGIEY1c01tbS3dGY214zQE8xmmxR05lY7uWm+vXjA0BmYEHBYABOsAIzDzIaRPJRuhJJxrjyeNQ0hOUihw7weqdTsmxml1-mzk3+gdiOAwBDAhfimGLpfLeW2JuRbRVlutWJxsfjrScJPaD2unEMOncqn7Pxz-0BrQECKXVYQKtuKrVHm07XaKoVZVuqox5OUbRKg0IZMwHf0rxCAsZxLDIQgrGVSjjJ0XwqPoP2xZQWycHAKk7PoMXuQxz31IdwmvMd0AnKcYIIOCb3yO9Q2XZDlT-N8MK-BMECeJQXgPeQ4ycUDvCAA */
     id: "mafia",
     initial: "playing", // temp
     predictableActionArguments: true,
@@ -100,24 +115,30 @@ const mafiaeMachine = createMachine(
         states: {
           night: {
             on: {
-              DAY: {
-                target: "day",
+              FIRSTDAY: {
+                target: "day.firstDay",
+                actions: ["setUserByRole"],
+              },
+              AFTERFIRSTDAY: {
+                target: "day.afterFirstDay",
               },
             },
-            initial: "first",
+            initial: "firstNight",
             states: {
-              first: {
-                exit: ["setUserByRole"],
-              },
-              afterFirst: {},
+              firstNight: {},
+              afterFirstNight: {},
             },
           },
           day: {
             on: {
-              AFTERFISRT: {
-                target: "night.afterFirst",
+              AFTERFIRSTNIGHT: {
+                target: "night.afterFirstNight",
                 actions: ["exile"],
               },
+            },
+            states: {
+              firstDay: {},
+              afterFirstDay: {},
             },
           },
         },
@@ -135,14 +156,14 @@ const mafiaeMachine = createMachine(
         context.users = event.roles
       }),
       setUserByRole: assign((context, event) => {
-        if (event.type !== "DAY") return
+        if (event.type !== "FIRSTDAY") return
         context.mafia.alive = event.mafia
         context.citizen.normal.alive = event.normal
         context.citizen.doctor.alive = event.doctor ?? []
         context.citizen.police.alive = event.police ?? []
       }),
       exile: assign((context, event) => {
-        if (event.type !== "AFTERFISRT") return
+        if (event.type !== "NIGHT") return
         const mafia = context.mafia.alive.indexOf(event.exiledUser)
         const normal = context.citizen.normal.alive.indexOf(event.exiledUser)
         const doctor = context.citizen.doctor.alive.indexOf(event.exiledUser)

@@ -18,7 +18,7 @@ function Exile() {
     setSelectedUesr(e.target.value)
   }
   const handleButtonClick = () => {
-    mafiaServices.send("AFTERFISRT", {
+    mafiaServices.send("AFTERFIRSTNIGHT", {
       exiledUser: selectedUser,
     })
   }

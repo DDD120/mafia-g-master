@@ -51,7 +51,7 @@ function FirstNight() {
   )
 
   const handleButtonClick = () => {
-    mafiaServices.send("DAY", {
+    mafiaServices.send("FIRSTDAY", {
       mafia: mafiaUsers,
       normal: users.filter((user) => !selectedUsers.includes(user)),
       police: roles.includes("police") ? policeUsers : undefined,
