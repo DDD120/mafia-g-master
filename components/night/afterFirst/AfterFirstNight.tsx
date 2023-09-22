@@ -4,13 +4,46 @@ import Script from "@/components/Script"
 import SelectInput from "@/components/SelectInput"
 import Button from "@/components/button/Button"
 import useAliveUsers from "@/hooks/useAliveUsers"
-import { useState } from "react"
+import { useMafiaContext } from "@/providers/MafiaProvider"
+import { useSelector } from "@xstate/react"
+import { useParams } from "next/navigation"
+import { ChangeEvent, useEffect, useState } from "react"
 
 function AfterFirstNight() {
-  const [mafiaPointOut, setNafiaPointOut] = useState(null)
-  const [doctorPointOut, setDoctorPointOut] = useState(null)
+  const mafiaServices = useMafiaContext()
+  const roles = useSelector(mafiaServices, (state) => state.context.roles)
+  const [mafiaPointOut, setMafiaPointOut] = useState<string | null>(null)
+  const [doctorPointOut, setDoctorPointOut] = useState<string | null>(null)
+  const [isRequired, setIsRequired] = useState(false)
   const { aliveMafia, aliveCitizens, aliveNormal, alivePolice, aliveDoctor } =
     useAliveUsers()
+  const { days } = useParams()
+
+  const handleMafiaChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setMafiaPointOut(e.target.value)
+  }
+
+  const handleDoctorChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setDoctorPointOut(e.target.value)
+  }
+
+  const handleButtonClick = () => {
+    mafiaServices.send("AFTERFIRSTDAY", {
+      mafiaPointOut,
+      doctorPointOut,
+    })
+  }
+
+  useEffect(() => {
+    if (
+      !!mafiaPointOut &&
+      (roles.includes("doctor") ? !!doctorPointOut : true)
+    ) {
+      setIsRequired(true)
+    } else {
+      setIsRequired(false)
+    }
+  }, [roles, mafiaPointOut, doctorPointOut])
 
   return (
     <>
@@ -31,6 +64,7 @@ function AfterFirstNight() {
                 name="mafiaPointOut"
                 id={`mafiaPointOut-${user}`}
                 value={user}
+                onChange={handleMafiaChange}
               />
             ))}
           </ul>
@@ -49,6 +83,7 @@ function AfterFirstNight() {
                     name="doctorPointOut"
                     id={`doctorPointOut-${user}`}
                     value={user}
+                    onChange={handleDoctorChange}
                   />
                 ))}
               </ul>
@@ -75,7 +110,11 @@ function AfterFirstNight() {
         </div>
       </div>
       <div className="shrink-0">
-        <Button isActive={!!mafiaPointOut && !!doctorPointOut}>
+        <Button
+          to={`/day/${days}?step=debate`}
+          onClick={handleButtonClick}
+          isActive={isRequired}
+        >
           지목 완료
         </Button>
       </div>

@@ -6,6 +6,7 @@ type Roles = "mafia" | "normal" | "doctor" | "police"
 interface Context {
   users: string[]
   roles: Roles[]
+  dayNotice: string
   mafia: {
     alive: string[]
     died: string[]
@@ -41,25 +42,22 @@ interface FisrtDayEvent {
 
 interface AfterFirstDayEvent {
   type: "AFTERFIRSTDAY"
-  maifaPointOut: string
+  mafiaPointOut: string
   doctorPointOut?: string
-}
-
-interface NightEvent {
-  type: "NIGHT"
-  exiledUser: string
 }
 
 interface AfterFirstNight {
   type: "AFTERFIRSTNIGHT"
+  exiledUser: string
 }
 
 type Events =
   | PlayingEvent
   | FisrtDayEvent
   | AfterFirstDayEvent
-  | NightEvent
   | AfterFirstNight
+
+const userRolMap = new Map<string, Roles>()
 
 const mafiaeMachine = createMachine(
   {
@@ -82,13 +80,14 @@ const mafiaeMachine = createMachine(
         "사용자7",
       ], //temp
       roles: ["mafia", "doctor", "police"], //temp
+      dayNotice: "",
       mafia: {
-        alive: ["사용자1"],
+        alive: [],
         died: [],
       },
       citizen: {
         normal: {
-          alive: ["사용자2", "사용자3", "사용자4", "사용자5"],
+          alive: [],
           died: [],
         },
         doctor: {
@@ -121,6 +120,7 @@ const mafiaeMachine = createMachine(
               },
               AFTERFIRSTDAY: {
                 target: "day.afterFirstDay",
+                actions: ["pointOut"],
               },
             },
             initial: "firstNight",
@@ -161,36 +161,51 @@ const mafiaeMachine = createMachine(
         context.citizen.normal.alive = event.normal
         context.citizen.doctor.alive = event.doctor ?? []
         context.citizen.police.alive = event.police ?? []
+        for (let user of event.mafia) userRolMap.set(user, "mafia")
+        for (let user of event.normal) userRolMap.set(user, "normal")
+        if (event.doctor)
+          for (let user of event.doctor) userRolMap.set(user, "doctor")
+        if (event.police)
+          for (let user of event.police) userRolMap.set(user, "police")
+        console.log(userRolMap)
       }),
       exile: assign((context, event) => {
-        if (event.type !== "NIGHT") return
-        const mafia = context.mafia.alive.indexOf(event.exiledUser)
-        const normal = context.citizen.normal.alive.indexOf(event.exiledUser)
-        const doctor = context.citizen.doctor.alive.indexOf(event.exiledUser)
-        const police = context.citizen.police.alive.indexOf(event.exiledUser)
-        if (mafia > -1) {
+        if (event.type !== "AFTERFIRSTNIGHT") return
+        const role = userRolMap.get(event.exiledUser)
+        if (!role) return
+
+        if (role === "mafia") {
           context.mafia.alive = context.mafia.alive.filter(
             (user) => user !== event.exiledUser
           )
           context.mafia.died.push(event.exiledUser)
-        }
-        if (normal > -1) {
-          context.citizen.normal.alive = context.citizen.normal.alive.filter(
+        } else {
+          context.citizen[role].alive = context.citizen[role].alive.filter(
             (user) => user !== event.exiledUser
           )
-          context.citizen.normal.died.push(event.exiledUser)
+          context.citizen[role].died.push(event.exiledUser)
         }
-        if (doctor > -1) {
-          context.citizen.doctor.alive = context.citizen.doctor.alive.filter(
-            (user) => user !== event.exiledUser
-          )
-          context.citizen.doctor.died.push(event.exiledUser)
-        }
-        if (police > -1) {
-          context.citizen.police.alive = context.citizen.police.alive.filter(
-            (user) => user !== event.exiledUser
-          )
-          context.citizen.police.died.push(event.exiledUser)
+      }),
+      pointOut: assign((context, event) => {
+        if (event.type !== "AFTERFIRSTDAY") return
+        if (event.mafiaPointOut === event.doctorPointOut) {
+          context.dayNotice = "이번 밤은 아무도 살해되지 않았습니다."
+        } else {
+          const role = userRolMap.get(event.mafiaPointOut)
+          if (!role) return
+
+          if (role === "mafia") {
+            context.mafia.alive = context.mafia.alive.filter(
+              (user) => user !== event.mafiaPointOut
+            )
+            context.mafia.died.push(event.mafiaPointOut)
+          } else {
+            context.citizen[role].alive = context.citizen[role].alive.filter(
+              (user) => user !== event.mafiaPointOut
+            )
+            context.citizen[role].died.push(event.mafiaPointOut)
+          }
+          context.dayNotice = `마피아에 의해 시민 ${event.mafiaPointOut}님이 살해되었습니다.`
         }
       }),
     },

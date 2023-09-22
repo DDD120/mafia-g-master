@@ -11,7 +11,7 @@ import { useParams } from "next/navigation"
 function Exile() {
   const mafiaServices = useMafiaContext()
   const { aliveUsers } = useAliveUsers()
-  const [selectedUser, setSelectedUesr] = useState(aliveUsers[0])
+  const [selectedUser, setSelectedUesr] = useState<string | null>(null)
   const { days } = useParams()
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -37,13 +37,16 @@ function Exile() {
                 id={user}
                 value={user}
                 onChange={handleInputChange}
-                defaultChecked={user === aliveUsers[0]}
               />
             ))}
           </ul>
         </div>
       </div>
-      <Button to={`/night/${+days + 1}`} onClick={handleButtonClick}>
+      <Button
+        to={`/night/${+days + 1}`}
+        isActive={!!selectedUser}
+        onClick={handleButtonClick}
+      >
         추방 선택 완료
       </Button>
     </>
