@@ -15,8 +15,14 @@ function AfterFirstNight() {
   const [mafiaPointOut, setMafiaPointOut] = useState<string | null>(null)
   const [doctorPointOut, setDoctorPointOut] = useState<string | null>(null)
   const [isRequired, setIsRequired] = useState(false)
-  const { aliveMafia, aliveCitizens, aliveNormal, alivePolice, aliveDoctor } =
-    useAliveUsers()
+  const {
+    aliveUsers,
+    aliveMafia,
+    aliveCitizens,
+    aliveNormal,
+    alivePolice,
+    aliveDoctor,
+  } = useAliveUsers()
   const { days } = useParams()
 
   const handleMafiaChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +82,7 @@ function AfterFirstNight() {
                 <br /> 의사 지목이 완료되었습니다.
               </Script>
               <ul>
-                {[...aliveMafia, ...aliveNormal, ...alivePolice].map((user) => (
+                {aliveUsers.map((user) => (
                   <SelectInput
                     key={user}
                     type="radio"
