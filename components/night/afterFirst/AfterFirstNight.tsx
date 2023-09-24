@@ -19,7 +19,6 @@ function AfterFirstNight() {
     aliveUsers,
     aliveMafia,
     aliveCitizens,
-    aliveNormal,
     alivePolice,
     aliveDoctor,
   } = useAliveUsers()
