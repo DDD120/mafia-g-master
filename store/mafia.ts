@@ -1,11 +1,12 @@
 import { createMachine } from "xstate"
 import { assign } from "@xstate/immer"
 
-type Roles = "mafia" | "normal" | "doctor" | "police"
+export type Roles = "mafia" | "normal" | "doctor" | "police"
 
 interface Context {
   users: string[]
   roles: Roles[]
+  winner: "mafia" | "citizen" | null
   dayNotice: string
   mafia: {
     alive: string[]
@@ -61,7 +62,7 @@ const userRolMap = new Map<string, Roles>()
 
 const mafiaeMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QFsCGAzAlqgdLMALgZgHZQDEACgDICCAmgJIByA4gNoAMAuoqAA4B7WJmKCSfEAA9EARgBssnAGZVqzsoDsAJgCc83QBYANCACeibYcM5rm3bMPbOzzfIAcAX0+m0WXPwANqhmpFA4JJhQABYE5ABijABKAMoAKgAiDFy8SCBCImISeTIIAKzyNk6anDq69rK69aYWCMqNtk1Nlbru2to6yt6+GNg4QSFhEVGx5LTxaQCiSYmpmdk8kgWimOKSpRVVA7V6DU2aLYiGsmU4slZNhpyc8s-ujsMgfmMToWQ4EBCcwWy1W6WYjFYAAk0jktsIdnsSog1DhKmU+ppZJpDO5au5LggbpwVGplJwmu53u95N4fCASIIIHBJN9UPDCrtiqBSgBaeSE3lWT5svCEYhkDmI7nSK7aQnaPE4TTKXRlex45weNwi0YBYJ-KBSor7SyaTRowwYgbY3H4wnyZR3eQu+RlQyPCmcLz00W-KaRGIEY1c01tbS3dGY214zQE8xmmxR05lY7uWm+vXjA0BmYEHBYABOsAIzDzIaRPJRuhJJxrjyeNQ0hOUihw7weqdTsmxml1-mzk3+gdiOAwBDAhfimGLpfLeW2JuRbRVlutWJxsfjrScJPaD2unEMOncqn7Pxz-0BrQECKXVYQKtuKrVHm07XaKoVZVuqox5OUbRKg0IZMwHf0rxCAsZxLDIQgrGVSjjJ0XwqPoP2xZQWycHAKk7PoMXuQxz31IdwmvMd0AnKcYIIOCb3yO9Q2XZDlT-N8MK-BMECeJQXgPeQ4ycUDvCAA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QFsCGAzAlqgdLMALgZgHZQDEACgDICCAmgJIByA4gNoAMAuoqAA4B7WJmKCSfEAA9EARgCcAdhwBmNSoBMADnkAWLRt27ZAGhABPRBoCsnHMYBsixdZWcND3Q9kBfH2bQsXH4AG1RzUigcEkwoAAsCcgAxRgAlAGUAFQARBi5eJBAhETEJQpkEB047XQ1FWQd5atktI0UzSwQVBRxbTllZNTr9FV0-AIxsHFDwyOjYhPJaJMyAUVSUjJy8nkli0UxxSQqqmrqGpv7W3XaLRGNrHFkbQdlOayb5VvGQQKmZiJkHAQcJLFbrTZZZiMVgACUy+T2wgOR3KiBUjRwnmsWgcDlcp28t06slsqnU8iU1gcKi0Hw0fn8IBIgggcEkf1QSJKhzKoAqAFoHB1EALDDhqpKpVLZGMmZy8IRiGRuSi+dJ7hoRQhtA4cIpONcWvolKSfgqAZFVaVjujBljdDi8QTqkTtTSnniHLiWtZtK0GfLJsEwoCojF4gRrbzbV1vA6nfiMa7ZMSrIpdAmmriNBoFKNzcHpqG5hGEjgsAAnWAEZgLKOFfY2tEIWp6ziKDR6Ko4+TWay6bUY2Q4LTPBy5-NdzjyQtBYuzIFlgg4DAEMCVpKYau1+vR1H8+4zhO4pOE1Pa2p2boeFwD6ydrTfIPzy1AkGdATI5uHhDOEeKCofYGJwTiDPIKjajYjxAR8VQYjogGGnO-wlu+4QVtuNbZOE+7qhUY7yPqsEgWBQGQXcXS1L0E4Tg0OIdrKDgoSGi5RB+q7oOum5YQQOGfkU34xi2hHEcBGigfU5GXv0Eq0bmj7WG8KgscC4hgHhsa1FBNj6oaSlKG4qYuMxjJAA */
     id: "mafia",
     initial: "playing", // temp
     predictableActionArguments: true,
@@ -80,14 +81,15 @@ const mafiaeMachine = createMachine(
         "사용자7",
       ], //temp
       roles: ["mafia", "doctor", "police"], //temp
+      winner: "mafia",
       dayNotice: "",
       mafia: {
         alive: [],
-        died: [],
+        died: ["사용자1"],
       },
       citizen: {
         normal: {
-          alive: [],
+          alive: ["사용자3", "사용자4"],
           died: [],
         },
         doctor: {
@@ -110,6 +112,7 @@ const mafiaeMachine = createMachine(
         },
       },
       playing: {
+        always: [{ target: "done", cond: "isDone", actions: ["setWinner"] }],
         initial: "night",
         states: {
           night: {
@@ -142,6 +145,9 @@ const mafiaeMachine = createMachine(
             },
           },
         },
+      },
+      done: {
+        type: "final",
       },
     },
   },
@@ -208,6 +214,18 @@ const mafiaeMachine = createMachine(
           context.dayNotice = `마피아에 의해 시민 ${event.mafiaPointOut}님이 살해되었습니다.`
         }
       }),
+      setWinner: assign((context) => {
+        context.winner = context.mafia.alive.length ? "mafia" : "citizen"
+      }),
+    },
+    guards: {
+      isDone: (context, event) => {
+        const citizens =
+          context.citizen.normal.alive.length +
+          context.citizen.doctor.alive.length +
+          context.citizen.police.alive.length
+        return context.mafia.alive.length === citizens
+      },
     },
   }
 )

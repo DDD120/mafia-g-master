@@ -1,9 +1,10 @@
 "use client"
 
-import { createContext, useContext } from "react"
-import { useInterpret } from "@xstate/react"
+import { createContext, useContext, useEffect } from "react"
+import { useInterpret, useSelector } from "@xstate/react"
 import { InterpreterFrom } from "xstate"
 import mafiaMachine from "@/store/mafia"
+import { useRouter } from "next/navigation"
 
 interface Props {
   children: React.ReactNode
@@ -15,6 +16,12 @@ export const MafiaContext = createContext(
 
 export function MafiaProvider({ children }: Props) {
   const mafiaService = useInterpret(mafiaMachine)
+  const done = useSelector(mafiaService, (state) => state.done)
+  const router = useRouter()
+
+  useEffect(() => {
+    if (done) router.push("/results")
+  }, [done, router])
 
   return (
     <MafiaContext.Provider value={mafiaService}>
