@@ -47,18 +47,48 @@ interface AfterFirstDayEvent {
   doctorPointOut?: string
 }
 
-interface AfterFirstNight {
+interface AfterFirstNightEvent {
   type: "AFTERFIRSTNIGHT"
   exiledUser: string
+}
+
+interface SettingEvent {
+  type: "SETTING"
 }
 
 type Events =
   | PlayingEvent
   | FisrtDayEvent
   | AfterFirstDayEvent
-  | AfterFirstNight
+  | AfterFirstNightEvent
+  | SettingEvent
 
 const userRolMap = new Map<string, Roles>()
+
+const initialContext: Context = {
+  users: [],
+  roles: [],
+  winner: "mafia",
+  dayNotice: "",
+  mafia: {
+    alive: [],
+    died: [],
+  },
+  citizen: {
+    normal: {
+      alive: [],
+      died: [],
+    },
+    doctor: {
+      alive: [],
+      died: [],
+    },
+    police: {
+      alive: [],
+      died: [],
+    },
+  },
+}
 
 const mafiaeMachine = createMachine(
   {
@@ -70,38 +100,7 @@ const mafiaeMachine = createMachine(
       context: {} as Context,
       events: {} as Events,
     },
-    context: {
-      users: [
-        "사용자1",
-        "사용자2",
-        "사용자3",
-        "사용자4",
-        "사용자5",
-        "사용자6",
-        "사용자7",
-      ], //temp
-      roles: ["mafia", "doctor", "police"], //temp
-      winner: "mafia",
-      dayNotice: "",
-      mafia: {
-        alive: [],
-        died: ["사용자1"],
-      },
-      citizen: {
-        normal: {
-          alive: ["사용자3", "사용자4"],
-          died: [],
-        },
-        doctor: {
-          alive: ["사용자6"],
-          died: [],
-        },
-        police: {
-          alive: ["사용자7"],
-          died: [],
-        },
-      },
-    },
+    context: initialContext,
     states: {
       setting: {
         on: {
@@ -147,6 +146,12 @@ const mafiaeMachine = createMachine(
         },
       },
       done: {
+        on: {
+          SETTING: {
+            target: "setting",
+            actions: ["reset"],
+          },
+        },
         type: "final",
       },
     },
@@ -216,6 +221,9 @@ const mafiaeMachine = createMachine(
       }),
       setWinner: assign((context) => {
         context.winner = context.mafia.alive.length ? "mafia" : "citizen"
+      }),
+      reset: assign((context) => {
+        context = initialContext
       }),
     },
     guards: {

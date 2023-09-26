@@ -34,6 +34,10 @@ function ResultsContent() {
     police: "경찰",
   }
 
+  const handleButtonClick = () => {
+    mafiaServices.send("SETTING")
+  }
+
   useEffect(() => {
     setMafiaUsers([...mafia.alive, ...mafia.died])
     for (let role in citizen) {
@@ -41,8 +45,6 @@ function ResultsContent() {
       setCitizenUsers((prev) => [...prev, [role, [...alive, ...died]]])
     }
   }, [mafia, citizen])
-
-  console.log(mafiaUsers, citizenUsers)
 
   return (
     <>
@@ -85,7 +87,9 @@ function ResultsContent() {
         </div>
       </div>
       <div className="shrink-0">
-        <Button>메인 화면으로 가기</Button>
+        <Button to="/" onClick={handleButtonClick}>
+          메인 화면으로 가기
+        </Button>
       </div>
     </>
   )
