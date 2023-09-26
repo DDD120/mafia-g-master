@@ -61,8 +61,8 @@ function FirstNight() {
 
   useEffect(() => {
     userNumberByRole[users.length]?.mafia === mafiaUsers.length &&
-    userNumberByRole[users.length]?.doctor === doctorUsers.length &&
-    userNumberByRole[users.length]?.police === policeUsers.length
+    (userNumberByRole[users.length]?.doctor ?? 0) === doctorUsers.length &&
+    (userNumberByRole[users.length]?.police ?? 0) === policeUsers.length
       ? setIsRequired(true)
       : setIsRequired(false)
   }, [users.length, mafiaUsers, doctorUsers, policeUsers])

@@ -52,16 +52,11 @@ interface AfterFirstNightEvent {
   exiledUser: string
 }
 
-interface SettingEvent {
-  type: "SETTING"
-}
-
 type Events =
   | PlayingEvent
   | FisrtDayEvent
   | AfterFirstDayEvent
   | AfterFirstNightEvent
-  | SettingEvent
 
 const userRolMap = new Map<string, Roles>()
 
@@ -92,9 +87,9 @@ const initialContext: Context = {
 
 const mafiaeMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QFsCGAzAlqgdLMALgZgHZQDEACgDICCAmgJIByA4gNoAMAuoqAA4B7WJmKCSfEAA9EARgCcAdhwBmNSoBMADnkAWLRt27ZAGhABPRBoCsnHMYBsixdZWcND3Q9kBfH2bQsXH4AG1RzUigcEkwoAAsCcgAxRgAlAGUAFQARBi5eJBAhETEJQpkEB047XQ1FWQd5atktI0UzSwQVBRxbTllZNTr9FV0-AIxsHFDwyOjYhPJaJMyAUVSUjJy8nkli0UxxSQqqmrqGpv7W3XaLRGNrHFkbQdlOayb5VvGQQKmZiJkHAQcJLFbrTZZZiMVgACUy+T2wgOR3KiBUjRwnmsWgcDlcp28t06slsqnU8iU1gcKi0Hw0fn8IBIgggcEkf1QSJKhzKoAqAFoHB1EALDDhqpKpVLZGMmZy8IRiGRuSi+dJ7hoRQhtA4cIpONcWvolKSfgqAZFVaVjujBljdDi8QTqkTtTSnniHLiWtZtK0GfLJsEwoCojF4gRrbzbV1vA6nfiMa7ZMSrIpdAmmriNBoFKNzcHpqG5hGEjgsAAnWAEZgLKOFfY2tEIWp6ziKDR6Ko4+TWay6bUY2Q4LTPBy5-NdzjyQtBYuzIFlgg4DAEMCVpKYau1+vR1H8+4zhO4pOE1Pa2p2boeFwD6ydrTfIPzy1AkGdATI5uHhDOEeKCofYGJwTiDPIKjajYjxAR8VQYjogGGnO-wlu+4QVtuNbZOE+7qhUY7yPqsEgWBQGQXcXS1L0E4Tg0OIdrKDgoSGi5RB+q7oOum5YQQOGfkU34xi2hHEcBGigfU5GXv0Eq0bmj7WG8KgscC4hgHhsa1FBNj6oaSlKG4qYuMxjJAA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QFsCGAzAlqgdLMALgZgHZQDEACgDICCAmgJIByA4gNoAMAuoqAA4B7WJmKCSfEAA9EARgBssnAGZVygCwBWRQA4A7HuU6ANCACeiAEybOOdQvnz18o5b2WdAX0+m0WXPwANqhmpBRcvEggQiJiElEyCLKcnMo4nJqWnFqyOvLu6pamFgiW8po4OgCcmjr26lVONsrevhjYOEEhYTgkmFAAFgTkAGKMAEoAygAqACIMEZIxopjikona6nZussnyVVV6nI7FiMqyVXYHjSnKhrnyrSB+HV2hZL39Q+S0I9MAouMxlM5gseEthCs1glEJttnpdscDkcTuZEPYKrJLA0qspaud8honi8AsF3lAcBAQj8-oDgTNmIxWAAJaaLKLLOLrM6qHBNHQ2TRaLR6RqnJI2FSqDzyMpaDLubw+EAkQQQOCSEkQ2KreKgRIAWnk4oNljS1wtloOLWVJLwhGIZG1UL10nRRTRpTyOCOOmUbhunAFzmJ7VJ3SdHMhXJhpQMfK0Aoyws0ouNnpcOAcTnO-usMs0of8nTJPT6gwIzpj+rO1gTtUFKbT4rcWyaBj0zRctyLr1LH3LQxwWAATrACMwvpWozroTWEMoqrZOO4quo-epF5vNOLlIpKlj1Hp5DpktjLIde+HyZ8KzgMAQwCORpgxxOp1XddyF4Z60mhQBzaeoUtjnNiVS7JosgaLIV4lhGFJUiUAjRl+saGBUhiNLksiCpwVQmJ61gVIuqZHGoQbJDabTFm8PRIcOr7jrMISfnOboIHofo+ouui4Rk+GESUGiWDg2jYvsLiNGucF0R8DEPk+L5vixyHRKh7GJFxaRYXxeEEeK6icEoxzYn6BErlUlhwRA4hgGxrobHo4qdkonYpDsF7GYoSqeEAA */
     id: "mafia",
-    initial: "playing", // temp
+    initial: "setting",
     predictableActionArguments: true,
     schema: {
       context: {} as Context,
@@ -146,12 +141,6 @@ const mafiaeMachine = createMachine(
         },
       },
       done: {
-        on: {
-          SETTING: {
-            target: "setting",
-            actions: ["reset"],
-          },
-        },
         type: "final",
       },
     },
@@ -159,12 +148,13 @@ const mafiaeMachine = createMachine(
   {
     actions: {
       setUsers: assign((context, event) => {
+        console.log(event)
         if (event.type !== "PLAYING") return
         context.users = event.users
       }),
       setRols: assign((context, event) => {
         if (event.type !== "PLAYING") return
-        context.users = event.roles
+        context.roles = event.roles
       }),
       setUserByRole: assign((context, event) => {
         if (event.type !== "FIRSTDAY") return
@@ -222,17 +212,22 @@ const mafiaeMachine = createMachine(
       setWinner: assign((context) => {
         context.winner = context.mafia.alive.length ? "mafia" : "citizen"
       }),
-      reset: assign((context) => {
-        context = initialContext
-      }),
     },
     guards: {
       isDone: (context, event) => {
+        const diedLength =
+          context.mafia.died.length +
+          context.citizen.normal.died.length +
+          context.citizen.doctor.died.length +
+          context.citizen.police.died.length
+        if (!diedLength) return false
         const citizens =
           context.citizen.normal.alive.length +
           context.citizen.doctor.alive.length +
           context.citizen.police.alive.length
-        return context.mafia.alive.length === citizens
+        return (
+          context.mafia.alive.length === citizens || !context.mafia.alive.length
+        )
       },
     },
   }

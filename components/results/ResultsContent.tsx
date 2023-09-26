@@ -5,6 +5,7 @@ import Button from "../button/Button"
 import { useSelector } from "@xstate/react"
 import { useEffect, useState } from "react"
 import useAliveUsers from "@/hooks/useAliveUsers"
+import { Roles } from "@/store/mafia"
 
 type Citizen = {
   [key: string]: {
@@ -17,7 +18,7 @@ function ResultsContent() {
   const [mafiaUsers, setMafiaUsers] = useState<string[]>([])
   const [citizenUsers, setCitizenUsers] = useState<[string, string[]][]>([])
   const mafiaServices = useMafiaContext()
-  const { winner, mafia, citizen } = useSelector(
+  const { winner, mafia, citizen, roles } = useSelector(
     mafiaServices,
     (state) => state.context
   )
@@ -35,16 +36,18 @@ function ResultsContent() {
   }
 
   const handleButtonClick = () => {
-    mafiaServices.send("SETTING")
+    mafiaServices.stop()
+    mafiaServices.start()
   }
 
   useEffect(() => {
     setMafiaUsers([...mafia.alive, ...mafia.died])
     for (let role in citizen) {
+      if (!roles.includes(role as Roles)) return
       const { alive, died } = (citizen as Citizen)[role]
       setCitizenUsers((prev) => [...prev, [role, [...alive, ...died]]])
     }
-  }, [mafia, citizen])
+  }, [mafia, citizen, roles])
 
   return (
     <>
@@ -58,9 +61,9 @@ function ResultsContent() {
             <h2 className="absolute top-[-20px] left-1/2 translate-x-[-50%] inline-block  text-3xl font-bold bg-black px-4">
               생존자
             </h2>
-            <div className="mt-2">
+            <div className="mt-2 flex justify-center gap-2">
               {aliveUsers.map((user) => (
-                <span key={user}>{user}</span>
+                <span key={user}>{user} </span>
               ))}
             </div>
           </div>
@@ -70,17 +73,22 @@ function ResultsContent() {
             </h2>
             <div>
               <h3 className="text-xl font-bold my-2">마피아 팀</h3>
-              {mafiaUsers.map((mafia) => (
-                <span key={mafia}>{mafia}</span>
-              ))}
+              <div className="flex justify-center gap-2">
+                {mafiaUsers.map((mafia) => (
+                  <span key={mafia}>{mafia} </span>
+                ))}
+              </div>
             </div>
             <h3 className="text-xl font-bold my-2">시민 팀</h3>
+
             {citizenUsers.map((citizen) => (
               <div key={citizen[0]}>
-                <span>{roleMap[citizen[0]]} : </span>
-                {citizen[1].map((user) => (
-                  <span key={user}>{user}</span>
-                ))}
+                <span>{roleMap[citizen[0]]}</span>
+                <div className="flex justify-center gap-2">
+                  {citizen[1].map((user) => (
+                    <span key={user}>{user} </span>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
