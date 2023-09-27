@@ -25,7 +25,7 @@ function Exile() {
 
   return (
     <>
-      <div>
+      <div className="scrollbar-hide overflow-y-auto">
         <Script>추방할 사람을 선택하세요.</Script>
         <div className="my-2">
           <ul>
@@ -42,13 +42,15 @@ function Exile() {
           </ul>
         </div>
       </div>
-      <Button
-        to={`/night/${+days + 1}`}
-        isActive={!!selectedUser}
-        onClick={handleButtonClick}
-      >
-        추방 선택 완료
-      </Button>
+      <div className="shrink-0">
+        <Button
+          to={`/night/${+days + 1}`}
+          isActive={!!selectedUser}
+          onClick={handleButtonClick}
+        >
+          추방 선택 완료
+        </Button>
+      </div>
     </>
   )
 }
