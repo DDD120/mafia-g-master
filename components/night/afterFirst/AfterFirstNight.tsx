@@ -15,13 +15,8 @@ function AfterFirstNight() {
   const [mafiaPointOut, setMafiaPointOut] = useState<string | null>(null)
   const [doctorPointOut, setDoctorPointOut] = useState<string | null>(null)
   const [isRequired, setIsRequired] = useState(false)
-  const {
-    aliveUsers,
-    aliveMafia,
-    aliveCitizens,
-    alivePolice,
-    aliveDoctor,
-  } = useAliveUsers()
+  const { aliveUsers, aliveMafia, aliveCitizens, alivePolice, aliveDoctor } =
+    useAliveUsers()
   const { days } = useParams()
 
   const handleMafiaChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -41,14 +36,15 @@ function AfterFirstNight() {
 
   useEffect(() => {
     if (
-      !!mafiaPointOut &&
-      (roles.includes("doctor") ? !!doctorPointOut : true)
+      (!!mafiaPointOut &&
+        (roles.includes("doctor") ? !!doctorPointOut : true)) ||
+      !aliveDoctor.length
     ) {
       setIsRequired(true)
     } else {
       setIsRequired(false)
     }
-  }, [roles, mafiaPointOut, doctorPointOut])
+  }, [roles, aliveDoctor, mafiaPointOut, doctorPointOut])
 
   return (
     <>

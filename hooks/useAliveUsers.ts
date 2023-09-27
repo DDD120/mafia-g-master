@@ -8,21 +8,21 @@ function useAliveUsers() {
   const [aliveUsers, setAliveUsers] = useState<string[]>([])
   const [aliveCitizens, setAliveCitizens] = useState<string[]>([])
   const mafiaService = useMafiaContext()
-  const { alive: aliveMafia } = useSelector(
+  const aliveMafia = useSelector(
     mafiaService,
-    (state) => state.context.mafia
+    (state) => state.context.mafia.alive
   )
-  const { alive: aliveNormal } = useSelector(
+  const aliveNormal = useSelector(
     mafiaService,
-    (state) => state.context.citizen.normal
+    (state) => state.context.citizen.normal.alive
   )
-  const { alive: aliveDoctor } = useSelector(
+  const aliveDoctor = useSelector(
     mafiaService,
-    (state) => state.context.citizen.doctor
+    (state) => state.context.citizen.doctor.alive
   )
-  const { alive: alivePolice } = useSelector(
+  const alivePolice = useSelector(
     mafiaService,
-    (state) => state.context.citizen.police
+    (state) => state.context.citizen.police.alive
   )
 
   useEffect(() => {
