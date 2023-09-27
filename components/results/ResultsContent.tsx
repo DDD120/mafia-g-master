@@ -95,7 +95,7 @@ function ResultsContent() {
         </div>
       </div>
       <div className="shrink-0">
-        <Button to="/" onClick={handleButtonClick}>
+        <Button isActive to="/" onClick={handleButtonClick}>
           메인 화면으로 가기
         </Button>
       </div>

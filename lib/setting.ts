@@ -42,7 +42,7 @@ export const userNumberByRole: UserNumberByRole = {
   },
   6: {
     mafia: 1,
-    doctor: 1,
+    police: 1,
   },
   7: {
     mafia: 1,

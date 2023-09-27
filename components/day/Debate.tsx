@@ -18,7 +18,9 @@ function Debate({ days }: Props) {
         </Script>
         <CountdownTimer />
       </div>
-      <Button to={`/day/${days}?step=exile`}>토론 완료</Button>
+      <Button isActive to={`/day/${days}?step=exile`}>
+        토론 완료
+      </Button>
     </>
   )
 }

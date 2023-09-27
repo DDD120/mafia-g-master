@@ -10,7 +10,7 @@ interface Props {
 
 function Button({
   layoutMode = "fullWidth",
-  isActive = true,
+  isActive = false,
   children,
   to,
   onClick,
