@@ -1,62 +1,6 @@
 import { createMachine } from "xstate"
 import { assign } from "@xstate/immer"
-
-export type Roles = "mafia" | "normal" | "doctor" | "police"
-
-interface Context {
-  users: string[]
-  roles: Roles[]
-  winner: "mafia" | "citizen" | null
-  dayNotice: string
-  mafia: {
-    alive: string[]
-    died: string[]
-  }
-  citizen: {
-    normal: {
-      alive: string[]
-      died: string[]
-    }
-    doctor: {
-      alive: string[]
-      died: string[]
-    }
-    police: {
-      alive: string[]
-      died: string[]
-    }
-  }
-}
-
-interface PlayingEvent {
-  type: "PLAYING"
-  users: string[]
-  roles: Roles[]
-}
-interface FisrtDayEvent {
-  type: "FIRSTDAY"
-  mafia: string[]
-  normal: string[]
-  doctor?: string[]
-  police?: string[]
-}
-
-interface AfterFirstDayEvent {
-  type: "AFTERFIRSTDAY"
-  mafiaPointOut: string
-  doctorPointOut?: string
-}
-
-interface AfterFirstNightEvent {
-  type: "AFTERFIRSTNIGHT"
-  exiledUser: string
-}
-
-type Events =
-  | PlayingEvent
-  | FisrtDayEvent
-  | AfterFirstDayEvent
-  | AfterFirstNightEvent
+import { Context, Events, Roles } from "./types"
 
 const userRolMap = new Map<string, Roles>()
 
@@ -148,7 +92,6 @@ const mafiaeMachine = createMachine(
   {
     actions: {
       setUsers: assign((context, event) => {
-        console.log(event)
         if (event.type !== "PLAYING") return
         context.users = event.users
       }),
@@ -158,17 +101,15 @@ const mafiaeMachine = createMachine(
       }),
       setUserByRole: assign((context, event) => {
         if (event.type !== "FIRSTDAY") return
-        context.mafia.alive = event.mafia
-        context.citizen.normal.alive = event.normal
-        context.citizen.doctor.alive = event.doctor ?? []
-        context.citizen.police.alive = event.police ?? []
-        for (let user of event.mafia) userRolMap.set(user, "mafia")
-        for (let user of event.normal) userRolMap.set(user, "normal")
-        if (event.doctor)
-          for (let user of event.doctor) userRolMap.set(user, "doctor")
-        if (event.police)
-          for (let user of event.police) userRolMap.set(user, "police")
-        console.log(userRolMap)
+        for (const role of context.roles) {
+          if (role === "mafia") {
+            context.mafia.alive = event.mafia
+            for (const user of event.mafia) userRolMap.set(user, "mafia")
+          } else {
+            context.citizen[role].alive = event[role] ?? []
+            for (const user of event[role] ?? []) userRolMap.set(user, role)
+          }
+        }
       }),
       exile: assign((context, event) => {
         if (event.type !== "AFTERFIRSTNIGHT") return
@@ -214,20 +155,20 @@ const mafiaeMachine = createMachine(
       }),
     },
     guards: {
-      isDone: (context, event) => {
-        const diedLength =
-          context.mafia.died.length +
-          context.citizen.normal.died.length +
-          context.citizen.doctor.died.length +
-          context.citizen.police.died.length
-        if (!diedLength) return false
-        const citizens =
-          context.citizen.normal.alive.length +
-          context.citizen.doctor.alive.length +
-          context.citizen.police.alive.length
-        return (
-          context.mafia.alive.length === citizens || !context.mafia.alive.length
-        )
+      isDone: ({ mafia, citizen }) => {
+        const diedLen =
+          mafia.died.length +
+          citizen.normal.died.length +
+          citizen.doctor.died.length +
+          citizen.police.died.length
+        if (!diedLen) return false
+        const citizensAliveLen =
+          citizen.normal.alive.length +
+          citizen.doctor.alive.length +
+          citizen.police.alive.length
+
+        // 살아있는 마피아와 시민의 수가 같아지거나, 살아있는 마피아가 모두 죽은 경우
+        return mafia.alive.length === citizensAliveLen || !mafia.alive.length
       },
     },
   }

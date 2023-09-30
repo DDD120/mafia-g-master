@@ -5,7 +5,7 @@ import Button from "../button/Button"
 import { useSelector } from "@xstate/react"
 import { useEffect, useState } from "react"
 import useAliveUsers from "@/hooks/useAliveUsers"
-import { Roles } from "@/store/mafia"
+import { Roles } from "@/store/types"
 
 type Citizen = {
   [key: string]: {
