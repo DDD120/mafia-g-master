@@ -1,8 +1,8 @@
 "use client"
 
 import Button from "@/components/button/Button"
-import AddJobSelect from "./AddJobSelect"
-import NamesInput from "./NamesInput"
+import AddJob from "./AddJob"
+import UserNamesInput from "./UserNamesInput"
 import UsersCountSelect from "./UsersCountSelect"
 import { KeyboardEventHandler, useCallback, useEffect, useState } from "react"
 import { MultiValue } from "react-select"
@@ -13,56 +13,58 @@ function SettingContent() {
   const [numberOfUsers, setNumberOfUsers] = useState(
     NumberOfUsersOptions[0].value
   )
-  const [inputValue, setInputValue] = useState("")
-  const [names, setNames] = useState<readonly Option<string>[]>([])
+  const [userInputValue, setUserInputValue] = useState("")
+  const [userNames, setUserNames] = useState<readonly Option<string>[]>([])
   const [isRequired, setIsRequired] = useState(false)
   const [selectedPolice, setSelectedPolice] = useState(false)
   const [selectedDoctor, setSelectedDoctor] = useState(false)
   const mafiaServices = useMafiaContext()
 
   const handleKeyDown: KeyboardEventHandler = (event) => {
-    if (!inputValue) return
-    if (names.some((n) => n.label === inputValue)) return
-    if (numberOfUsers <= names.length) return
+    if (!userInputValue) return
+    if (userNames.some((n) => n.label === userInputValue)) return
+    if (numberOfUsers <= userNames.length) return
 
     switch (event.key) {
       case "Enter":
       case "Tab":
-        setNames((prev) => [...prev, createOption(inputValue)])
-        setInputValue("")
+        setUserNames((prev) => [...prev, createOption(userInputValue)])
+        setUserInputValue("")
         event.preventDefault()
     }
   }
 
   const handleNamesChange = useCallback(
     (newValue: MultiValue<Option<string>>) => {
-      setNames(newValue)
+      setUserNames(newValue)
     },
     []
   )
 
   const handleNamesInputChange = useCallback((newValue: string) => {
-    setInputValue(newValue)
+    setUserInputValue(newValue)
   }, [])
 
   const handleUsersCountChange = (count: Option<number>) => {
     setNumberOfUsers(count.value)
-    setNames([])
+    setUserNames([])
   }
 
-  const onButtonClick = () => {
+  const handleButtonClick = () => {
     const roles = ["mafia", "normal"]
     if (selectedPolice) roles.push("police")
     if (selectedDoctor) roles.push("doctor")
     mafiaServices.send("PLAYING", {
-      users: names.map((name) => name.value),
+      users: userNames.map((name) => name.value),
       roles,
     })
   }
 
   useEffect(() => {
-    names.length < numberOfUsers ? setIsRequired(false) : setIsRequired(true)
-  }, [names.length, numberOfUsers])
+    userNames.length < numberOfUsers
+      ? setIsRequired(false)
+      : setIsRequired(true)
+  }, [userNames.length, numberOfUsers])
 
   return (
     <>
@@ -71,23 +73,23 @@ function SettingContent() {
           onChange={handleUsersCountChange}
           options={NumberOfUsersOptions}
         />
-        <NamesInput
+        <UserNamesInput
           numberOfUsers={numberOfUsers}
-          names={names}
+          userNames={userNames}
+          userInputValue={userInputValue}
           isRequired={isRequired}
-          inputValue={inputValue}
           handleNamesChange={handleNamesChange}
           handleNamesInputChange={handleNamesInputChange}
           handleKeyDown={handleKeyDown}
         />
-        <AddJobSelect
+        <AddJob
           numberOfUsers={numberOfUsers}
           setSelectedPolice={setSelectedPolice}
           setSelectedDoctor={setSelectedDoctor}
         />
       </div>
       <div className="w-full">
-        <Button to="/night/1" onClick={onButtonClick} isActive={isRequired}>
+        <Button to="/night/1" onClick={handleButtonClick} isActive={isRequired}>
           설정 완료
         </Button>
       </div>

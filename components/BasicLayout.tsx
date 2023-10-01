@@ -9,9 +9,9 @@ function BasicLayout({ headText, children }: Props) {
       <header>
         <h1 className="font-black text-2xl text-center">{headText}</h1>
       </header>
-      <div className="mt-4 h-full overflow-hidden flex flex-col gap-4 justify-between">
+      <main className="mt-4 h-full overflow-hidden flex flex-col gap-4 justify-between">
         {children}
-      </div>
+      </main>
     </section>
   )
 }

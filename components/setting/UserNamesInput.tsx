@@ -5,13 +5,13 @@ import { MultiValue, InputProps, components, GroupBase } from "react-select"
 import { Option, selectThema } from "@/lib/setting"
 
 interface Props {
-  names: readonly Option<string>[]
+  userNames: readonly Option<string>[]
   numberOfUsers: number
   isRequired: boolean
+  userInputValue: string
   handleKeyDown: (event: KeyboardEvent) => void
   handleNamesChange: (newValue: MultiValue<Option<string>>) => void
   handleNamesInputChange: (newValue: string) => void
-  inputValue: string
 }
 
 function Input(
@@ -20,21 +20,21 @@ function Input(
   return <components.Input minLength={1} maxLength={7} {...props} />
 }
 
-function NamesInput({
-  names,
+function UserNamesInput({
+  userNames,
   numberOfUsers,
   isRequired,
   handleKeyDown,
   handleNamesChange,
   handleNamesInputChange,
-  inputValue,
+  userInputValue,
 }: Props) {
   return (
     <>
       <p className="text-xl flex items-center">
-        참여자의 이름을 적어주세요 ({names.length}/{numberOfUsers})
+        참여자의 이름을 적어주세요 ({userNames.length}/{numberOfUsers})
         {isRequired ? (
-          <FaCheck color="lightgreen" className="ml-2  translate-y-[0.5px]" />
+          <FaCheck color="lightgreen" className="ml-2 translate-y-[0.5px]" />
         ) : (
           <FaBan color="red" className="ml-2 translate-y-[0.5px]" />
         )}
@@ -43,7 +43,7 @@ function NamesInput({
         id="names"
         instanceId="names"
         components={{ Input, DropdownIndicator: null }}
-        inputValue={inputValue}
+        inputValue={userInputValue}
         autoFocus
         isClearable
         isMulti
@@ -51,7 +51,7 @@ function NamesInput({
         onKeyDown={handleKeyDown}
         onChange={handleNamesChange}
         onInputChange={handleNamesInputChange}
-        value={names}
+        value={userNames}
         placeholder="1~7자 이내, 문자를 입력하세요 (중복 불가능)"
         theme={selectThema}
       />
@@ -59,4 +59,4 @@ function NamesInput({
   )
 }
 
-export default NamesInput
+export default UserNamesInput
