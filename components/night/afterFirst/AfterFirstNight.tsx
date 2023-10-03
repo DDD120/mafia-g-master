@@ -7,44 +7,44 @@ import useAliveUsers from "@/hooks/useAliveUsers"
 import { useMafiaContext } from "@/providers/MafiaProvider"
 import { useSelector } from "@xstate/react"
 import { useParams } from "next/navigation"
-import { ChangeEvent, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
+
+interface PointOut {
+  mafia: string | null
+  doctor: string | null
+}
 
 function AfterFirstNight() {
   const mafiaServices = useMafiaContext()
   const roles = useSelector(mafiaServices, (state) => state.context.roles)
-  const [mafiaPointOut, setMafiaPointOut] = useState<string | null>(null)
-  const [doctorPointOut, setDoctorPointOut] = useState<string | null>(null)
+  const [pointOut, setPointOut] = useState({
+    mafia: null,
+    doctor: null,
+  })
   const [isRequired, setIsRequired] = useState(false)
   const { aliveUsers, aliveMafia, aliveCitizens, alivePolice, aliveDoctor } =
     useAliveUsers()
   const { days } = useParams()
 
-  const handleMafiaChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setMafiaPointOut(e.target.value)
-  }
-
-  const handleDoctorChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setDoctorPointOut(e.target.value)
+  const handlePointOutChange = (role: keyof PointOut, name: string) => {
+    setPointOut((prev) => ({ ...prev, [role]: name }))
   }
 
   const handleButtonClick = () => {
     mafiaServices.send("AFTERFIRSTDAY", {
-      mafiaPointOut,
-      doctorPointOut,
+      mafiaPointOut: pointOut.mafia,
+      doctorPointOut: pointOut.doctor,
     })
+    setIsRequired(false)
   }
 
   useEffect(() => {
-    if (
-      (!!mafiaPointOut &&
-        (roles.includes("doctor") ? !!doctorPointOut : true)) ||
+    const { mafia, doctor } = pointOut
+    const isRequired =
+      (!!mafia && (roles.includes("doctor") ? !!doctor : true)) ||
       !aliveDoctor.length
-    ) {
-      setIsRequired(true)
-    } else {
-      setIsRequired(false)
-    }
-  }, [roles, aliveDoctor, mafiaPointOut, doctorPointOut])
+    isRequired ? setIsRequired(true) : setIsRequired(false)
+  }, [roles, aliveDoctor, pointOut])
 
   return (
     <>
@@ -65,7 +65,7 @@ function AfterFirstNight() {
                 name="mafiaPointOut"
                 id={`mafiaPointOut-${user}`}
                 value={user}
-                onChange={handleMafiaChange}
+                onChange={(e) => handlePointOutChange("mafia", e.target.value)}
               />
             ))}
           </ul>
@@ -84,7 +84,9 @@ function AfterFirstNight() {
                     name="doctorPointOut"
                     id={`doctorPointOut-${user}`}
                     value={user}
-                    onChange={handleDoctorChange}
+                    onChange={(e) =>
+                      handlePointOutChange("doctor", e.target.value)
+                    }
                   />
                 ))}
               </ul>

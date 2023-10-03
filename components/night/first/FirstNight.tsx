@@ -1,27 +1,28 @@
 "use client"
 
-import {
-  useState,
-  useCallback,
-  useMemo,
-  useEffect,
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-} from "react"
+import { useState, useCallback, useEffect, ChangeEvent } from "react"
 import { useMafiaContext } from "@/providers/MafiaProvider"
 import { useSelector } from "@xstate/react"
 import Button from "@/components/button/Button"
 import RoleSelectionInput from "./RoleSelectionInput"
 import { userNumberByRole } from "@/lib/setting"
 
+interface SelectedUsersByRoles {
+  mafia: string[]
+  doctor: string[]
+  police: string[]
+}
+
 function FirstNight() {
   const mafiaServices = useMafiaContext()
   const { users, roles } = useSelector(mafiaServices, (state) => state.context)
   const [selectedUsers, setSelectedUsers] = useState<string[]>([])
-  const [mafiaUsers, setMafiaUesrs] = useState<string[]>([])
-  const [doctorUsers, setDoctorUesrs] = useState<string[]>([])
-  const [policeUsers, setPoliceUesrs] = useState<string[]>([])
+  const [selectedUsersByRoles, setSelectedUsersByRoles] =
+    useState<SelectedUsersByRoles>({
+      mafia: [],
+      doctor: [],
+      police: [],
+    })
   const [isRequired, setIsRequired] = useState(false)
 
   const changeUsers = (
@@ -33,39 +34,44 @@ function FirstNight() {
       : prevUser.filter((user) => user !== e.target.value)
   }
 
-  const roleMap: Record<string, Dispatch<SetStateAction<string[]>>> = useMemo(
-    () => ({
-      mafia: setMafiaUesrs,
-      doctor: setDoctorUesrs,
-      police: setPoliceUesrs,
-    }),
-    []
-  )
-
   const handleInputChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>, role: string) => {
+    (e: ChangeEvent<HTMLInputElement>, role: keyof SelectedUsersByRoles) => {
       setSelectedUsers((prevUser) => changeUsers(e, prevUser))
-      roleMap[role]((prevUser) => changeUsers(e, prevUser))
+      setSelectedUsersByRoles((prevUser) => ({
+        ...prevUser,
+        [role]: changeUsers(e, prevUser[role]),
+      }))
     },
-    [roleMap]
+    []
   )
 
   const handleButtonClick = () => {
     mafiaServices.send("FIRSTDAY", {
-      mafia: mafiaUsers,
+      mafia: selectedUsersByRoles.mafia,
       normal: users.filter((user) => !selectedUsers.includes(user)),
-      police: roles.includes("police") ? policeUsers : undefined,
-      doctor: roles.includes("doctor") ? doctorUsers : undefined,
+      police: roles.includes("police")
+        ? selectedUsersByRoles.police
+        : undefined,
+      doctor: roles.includes("doctor")
+        ? selectedUsersByRoles.doctor
+        : undefined,
     })
+    setIsRequired(false)
   }
 
   useEffect(() => {
-    userNumberByRole[users.length]?.mafia === mafiaUsers.length &&
-    (userNumberByRole[users.length]?.doctor ?? 0) === doctorUsers.length &&
-    (userNumberByRole[users.length]?.police ?? 0) === policeUsers.length
-      ? setIsRequired(true)
-      : setIsRequired(false)
-  }, [users.length, mafiaUsers, doctorUsers, policeUsers])
+    const {
+      mafia: mafiaCount,
+      doctor: doctorCount,
+      police: policeCount,
+    } = userNumberByRole[users.length]
+    const { mafia, doctor, police } = selectedUsersByRoles
+    const isRequired =
+      mafiaCount === mafia.length &&
+      (doctorCount ?? 0) === doctor.length &&
+      (policeCount ?? 0) === police.length
+    isRequired ? setIsRequired(true) : setIsRequired(false)
+  }, [users.length, selectedUsersByRoles])
 
   return (
     <>
@@ -77,7 +83,7 @@ function FirstNight() {
             role="mafia"
             selectedUsers={selectedUsers}
             users={users}
-            usersByRole={mafiaUsers}
+            usersByRole={selectedUsersByRoles.mafia}
           >
             밤이 되었습니다.
             <br /> 모두 눈을 감고 엎드려 바닥을 가볍게 두드리세요.
@@ -92,7 +98,7 @@ function FirstNight() {
               role="police"
               selectedUsers={selectedUsers}
               users={users}
-              usersByRole={policeUsers}
+              usersByRole={selectedUsersByRoles.police}
             >
               경찰을 선정하겠습니다.
               <br /> [어깨를 가볍게 터치하여 경찰 선정]
@@ -105,7 +111,7 @@ function FirstNight() {
               role="doctor"
               selectedUsers={selectedUsers}
               users={users}
-              usersByRole={doctorUsers}
+              usersByRole={selectedUsersByRoles.doctor}
             >
               의사을 선정하겠습니다.
               <br /> [어깨를 가볍게 터치하여 의사 선정]

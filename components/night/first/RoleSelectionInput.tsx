@@ -3,18 +3,19 @@ import Script from "@/components/Script"
 import { userNumberByRole } from "@/lib/setting"
 import { ChangeEvent } from "react"
 import { FaBan, FaCheck } from "react-icons/fa"
+import { Roles } from "@/store/types"
 
 interface Props {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
   selectedUsers: string[]
   usersByRole: string[]
   users: string[]
-  role: string
+  role: Exclude<Roles, "normal">
   includeName: boolean
   children: React.ReactNode
 }
 
-const roles: Record<string, string> = {
+const roles: Record<Exclude<Roles, "normal">, string> = {
   mafia: "마피아",
   doctor: "의사",
   police: "경찰",
@@ -31,7 +32,6 @@ function RoleSelectionInput({
 }: Props) {
   const currentUser = usersByRole.length
   const personnel = userNumberByRole[users.length]?.[role]
-
   return (
     <div>
       <Script includeName={includeName}>{children}</Script>
