@@ -25,13 +25,12 @@ function UsersCountSelect({ onChange, options }: Props) {
             ...base,
             backgroundColor: colors.black,
             border: "none",
-            transition: "0.2s",
             cursor: "pointer",
+            transform: "translate(-1px,1px)",
           }),
           option: (base) => ({
             ...base,
             color: colors.black,
-            transition: "0.2s",
             cursor: "pointer",
           }),
           singleValue: (base) => ({
