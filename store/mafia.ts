@@ -168,7 +168,7 @@ const mafiaeMachine = createMachine(
           citizen.police.alive.length
 
         // 살아있는 마피아와 시민의 수가 같아지거나, 살아있는 마피아가 모두 죽은 경우
-        return mafia.alive.length === citizensAliveLen || !mafia.alive.length
+        return mafia.alive.length >= citizensAliveLen || !mafia.alive.length
       },
     },
   }

@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useEffect } from "react"
+import { createContext, useContext, useLayoutEffect } from "react"
 import { useInterpret, useSelector } from "@xstate/react"
 import { InterpreterFrom } from "xstate"
 import mafiaMachine from "@/store/mafia"
@@ -19,7 +19,7 @@ export function MafiaProvider({ children }: Props) {
   const done = useSelector(mafiaService, (state) => state.done)
   const router = useRouter()
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (done) router.push("/results")
   }, [done, router])
 

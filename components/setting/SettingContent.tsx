@@ -88,7 +88,7 @@ function SettingContent() {
           setSelectedDoctor={setSelectedDoctor}
         />
       </div>
-      <div className="w-full">
+      <div className="w-full shrink-0">
         <Button to="/night/1" onClick={handleButtonClick} isActive={isRequired}>
           설정 완료
         </Button>
