@@ -1,4 +1,12 @@
 export type Roles = "mafia" | "normal" | "doctor" | "police"
+export type CitizenRoles = Exclude<Roles, "mafia">
+
+export type Citizen = {
+  [key in Exclude<Roles, "mafia">]: {
+    alive: string[]
+    died: string[]
+  }
+}
 
 export interface Context {
   users: string[]
@@ -9,20 +17,7 @@ export interface Context {
     alive: string[]
     died: string[]
   }
-  citizen: {
-    normal: {
-      alive: string[]
-      died: string[]
-    }
-    doctor: {
-      alive: string[]
-      died: string[]
-    }
-    police: {
-      alive: string[]
-      died: string[]
-    }
-  }
+  citizen: Citizen
 }
 
 interface PlayingEvent {
