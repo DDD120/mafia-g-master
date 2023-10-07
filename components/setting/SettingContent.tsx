@@ -58,6 +58,7 @@ function SettingContent() {
       users: userNames.map((name) => name.value),
       roles,
     })
+    setIsRequired(false)
   }
 
   useEffect(() => {
