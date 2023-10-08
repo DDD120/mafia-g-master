@@ -8,6 +8,7 @@ import useAliveUsers from "@/hooks/useAliveUsers"
 import { Citizen, CitizenRoles, Roles } from "@/store/types"
 import Congratulation from "./Congratulation"
 import ResultsSummary from "./ResultsSummary"
+import { userRoleMap } from "@/store/mafia"
 
 function ResultsContent() {
   const [mafiaUsers, setMafiaUsers] = useState<string[]>([])
@@ -24,12 +25,14 @@ function ResultsContent() {
   const handleButtonClick = () => {
     mafiaServices.stop()
     mafiaServices.start()
+    userRoleMap.clear()
   }
 
   useEffect(() => {
     setMafiaUsers([...mafia.alive, ...mafia.died])
     for (let role in citizen) {
       if (!roles.includes(role as Roles)) return
+
       const { alive, died } = citizen[role as keyof Citizen]
       setCitizenUsers((prev) => [
         ...prev,

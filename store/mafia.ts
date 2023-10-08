@@ -2,7 +2,7 @@ import { createMachine } from "xstate"
 import { assign } from "@xstate/immer"
 import { Context, Events, Roles } from "./types"
 
-const userRolMap = new Map<string, Roles>()
+export const userRoleMap = new Map<string, Roles>()
 
 const initialContext: Context = {
   users: [],
@@ -104,16 +104,16 @@ const mafiaeMachine = createMachine(
         for (const role of context.roles) {
           if (role === "mafia") {
             context.mafia.alive = event.mafia
-            for (const user of event.mafia) userRolMap.set(user, "mafia")
+            for (const user of event.mafia) userRoleMap.set(user, "mafia")
           } else {
             context.citizen[role].alive = event[role] ?? []
-            for (const user of event[role] ?? []) userRolMap.set(user, role)
+            for (const user of event[role] ?? []) userRoleMap.set(user, role)
           }
         }
       }),
       exile: assign((context, event) => {
         if (event.type !== "AFTERFIRSTNIGHT") return
-        const role = userRolMap.get(event.exiledUser)
+        const role = userRoleMap.get(event.exiledUser)
         if (!role) return
 
         if (role === "mafia") {
@@ -133,7 +133,7 @@ const mafiaeMachine = createMachine(
         if (event.mafiaPointOut === event.doctorPointOut) {
           context.dayNotice = "이번 밤은 아무도 살해되지 않았습니다."
         } else {
-          const role = userRolMap.get(event.mafiaPointOut)
+          const role = userRoleMap.get(event.mafiaPointOut)
           if (!role) return
 
           if (role === "mafia") {
