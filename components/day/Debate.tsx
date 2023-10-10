@@ -1,5 +1,6 @@
 import Script from "../Script"
 import Button from "../button/Button"
+import UsersInfoButton from "../button/UsersInfoButton"
 import CountdownTimer from "./CountdownTimer"
 import Notice from "./Notice"
 
@@ -19,6 +20,7 @@ function Debate({ days }: Props) {
         <CountdownTimer />
       </div>
       <div className="shrink-0">
+        <UsersInfoButton />
         <Button isActive to={`/day/${days}?step=exile`}>
           토론 완료
         </Button>

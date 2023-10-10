@@ -32,6 +32,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
             className={`${pretendard.variable} ${serif.variable} leading-normal font-pretendard min-h-screen bg-black text-gray-50`}
           >
             {children}
+            <div id="modal"></div>
           </body>
         </RecoilRootWrapper>
       </MafiaProvider>
