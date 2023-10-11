@@ -2,9 +2,9 @@
 
 import useModal from "@/hooks/useModal"
 import Button from "./Button"
-import UsersInfo from "../UsersInfo"
+import PlayerStatsBoard from "../PlayerStatsBoard"
 
-function UsersInfoButton() {
+function PlayerStatsBoardoButton() {
   const {
     modal: { isOpen },
     openModal,
@@ -16,9 +16,9 @@ function UsersInfoButton() {
       <Button isActive onClick={openModal}>
         버튼
       </Button>
-      {isOpen && <UsersInfo onClose={closeModal} />}
+      {isOpen && <PlayerStatsBoard onClose={closeModal} />}
     </>
   )
 }
 
-export default UsersInfoButton
+export default PlayerStatsBoardoButton
