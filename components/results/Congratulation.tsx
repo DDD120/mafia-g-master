@@ -1,12 +1,8 @@
+import { winnerToKorean } from "@/lib/toKorean"
 import FirecrackerLottie from "./FirecrackerLottie"
 
 interface Props {
   winner: "mafia" | "citizen" | null
-}
-
-const winnerToKorean = {
-  mafia: "마피아 팀",
-  citizen: "시민 팀",
 }
 
 function Congratulation({ winner }: Props) {

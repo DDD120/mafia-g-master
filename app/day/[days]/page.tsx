@@ -1,6 +1,6 @@
 import BasicLayout from "@/components/BasicLayout"
 import DayContent from "@/components/day/DayContent"
-import { daysInKorean } from "@/lib/days"
+import { daysToKorean } from "@/lib/toKorean"
 
 export type DayStep = "debate" | "exile"
 
@@ -15,7 +15,7 @@ interface Props {
 
 function Day({ params: { days }, searchParams: { step } }: Props) {
   return (
-    <BasicLayout headText={`${daysInKorean[days]} 낮`}>
+    <BasicLayout headText={`${daysToKorean[days]} 낮`}>
       <DayContent days={days} step={step} />
     </BasicLayout>
   )
