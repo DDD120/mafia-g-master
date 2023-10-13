@@ -1,7 +1,8 @@
 "use client"
 
+import { colors } from "@/lib/colors"
 import { useState } from "react"
-import { CountdownCircleTimer } from "react-countdown-circle-timer"
+import { ColorFormat, CountdownCircleTimer } from "react-countdown-circle-timer"
 import { FaPlay, FaPause } from "react-icons/fa"
 import { VscDebugRestart } from "react-icons/vsc"
 
@@ -31,7 +32,7 @@ function CountdownTimer() {
         key={key}
         isPlaying={isPlaying}
         duration={300}
-        colors="#D50000"
+        colors={colors.red as ColorFormat}
         trailColor="#ffffff20"
         size={240}
         strokeWidth={24}

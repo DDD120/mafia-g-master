@@ -68,10 +68,10 @@ function FirstNight() {
     const { mafia, doctor, police } = selectedUsersByRoles
     const isRequired =
       mafiaCount === mafia.length &&
-      (doctorCount ?? 0) === doctor.length &&
-      (policeCount ?? 0) === police.length
+      (roles.includes("doctor") ? doctorCount : 0) === doctor.length &&
+      (roles.includes("police") ? policeCount : 0) === police.length
     isRequired ? setIsRequired(true) : setIsRequired(false)
-  }, [users.length, selectedUsersByRoles])
+  }, [users.length, selectedUsersByRoles, roles])
 
   return (
     <>

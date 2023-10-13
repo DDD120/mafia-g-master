@@ -1,6 +1,6 @@
+import UsersStatsBoardoButton from "../UsersStatsBoard/UsersStatsBoardoButton"
 import Script from "../Script"
 import Button from "../button/Button"
-import PlayerStatsBoardoButton from "../button/PlayerStatsBoardoButton"
 import CountdownTimer from "./CountdownTimer"
 import Notice from "./Notice"
 
@@ -19,11 +19,15 @@ function Debate({ days }: Props) {
         </Script>
         <CountdownTimer />
       </div>
-      <div className="shrink-0">
-        <PlayerStatsBoardoButton />
-        <Button isActive to={`/day/${days}?step=exile`}>
-          토론 완료
-        </Button>
+      <div className="shrink-0 flex gap-2">
+        <div className="flex justify-center items-center">
+          <UsersStatsBoardoButton />
+        </div>
+        <div className="flex-1">
+          <Button isActive to={`/day/${days}?step=exile`}>
+            토론 완료
+          </Button>
+        </div>
       </div>
     </>
   )

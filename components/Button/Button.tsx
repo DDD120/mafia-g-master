@@ -22,7 +22,7 @@ function Button({
         className={`w-full h-[48px]  text-gray-50 rounded-lg text-xl font-black px-4 transition flex justify-center items-center ${
           isActive
             ? "bg-red hover:brightness-105"
-            : "pointer-events-none bg-gray-400"
+            : "pointer-events-none bg-zinc-500"
         } ${layoutMode === "inline" && "max-w-[300px]"}`}
         onClick={onClick}
       >

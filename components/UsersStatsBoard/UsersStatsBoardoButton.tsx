@@ -1,8 +1,10 @@
 "use client"
 
 import useModal from "@/hooks/useModal"
-import Button from "./Button"
-import PlayerStatsBoard from "../PlayerStatsBoard"
+
+import { BsClipboardPulse } from "react-icons/bs"
+import Button from "../button/Button"
+import UsersStatsBoard from "./UsersStatsBoard"
 
 function PlayerStatsBoardoButton() {
   const {
@@ -14,9 +16,9 @@ function PlayerStatsBoardoButton() {
   return (
     <>
       <Button isActive onClick={openModal}>
-        버튼
+        <BsClipboardPulse size={24} />
       </Button>
-      {isOpen && <PlayerStatsBoard onClose={closeModal} />}
+      {isOpen && <UsersStatsBoard onClose={closeModal} />}
     </>
   )
 }
