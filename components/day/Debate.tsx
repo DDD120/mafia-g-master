@@ -1,6 +1,6 @@
 import UsersStatsBoardButton from "../UsersStatsBoard/UsersStatsBoardButton"
 import Script from "../Script"
-import Button from "../Button/Button"
+import Button from "../button/Button"
 import CountdownTimer from "./CountdownTimer"
 import Notice from "./Notice"
 

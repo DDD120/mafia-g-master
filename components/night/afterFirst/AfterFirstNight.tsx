@@ -2,7 +2,7 @@
 
 import Script from "@/components/Script"
 import SelectInput from "@/components/SelectInput"
-import Button from "@/components/Button/Button"
+import Button from "@/components/button/Button"
 import useAliveUsers from "@/hooks/useAliveUsers"
 import { useMafiaContext } from "@/providers/MafiaProvider"
 import { useSelector } from "@xstate/react"

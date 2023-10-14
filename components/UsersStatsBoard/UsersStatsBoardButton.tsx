@@ -1,9 +1,8 @@
 "use client"
 
 import useModal from "@/hooks/useModal"
-
 import { BsClipboardPulse } from "react-icons/bs"
-import Button from "../Button/Button"
+import Button from "../button/Button"
 import UsersStatsBoard from "./UsersStatsBoard"
 
 function PlayerStatsBoardButton() {
