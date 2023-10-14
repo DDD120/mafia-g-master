@@ -26,7 +26,10 @@ const roleIcon: Record<Roles, React.ReactNode> = {
 
 function User({ user }: Props) {
   return (
-    <div key={user} className="flex flex-col justify-center items-center">
+    <div
+      key={user}
+      className="flex flex-col justify-center items-center self-start w-16"
+    >
       <div>{roleIcon[userRoleMap.get(user) ?? "normal"]}</div>
       <p>{user}</p>
     </div>
