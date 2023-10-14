@@ -2,7 +2,7 @@
 
 import useAliveUsers from "@/hooks/useAliveUsers"
 import Script from "../Script"
-import Button from "../button/Button"
+import Button from "../Button/Button"
 import SelectInput from "../SelectInput"
 import { ChangeEvent, useState } from "react"
 import { useMafiaContext } from "@/providers/MafiaProvider"

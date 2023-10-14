@@ -1,6 +1,6 @@
-import UsersStatsBoardoButton from "../UsersStatsBoard/UsersStatsBoardoButton"
+import UsersStatsBoardButton from "../UsersStatsBoard/UsersStatsBoardButton"
 import Script from "../Script"
-import Button from "../button/Button"
+import Button from "../Button/Button"
 import CountdownTimer from "./CountdownTimer"
 import Notice from "./Notice"
 
@@ -21,7 +21,7 @@ function Debate({ days }: Props) {
       </div>
       <div className="shrink-0 flex gap-2">
         <div className="flex justify-center items-center">
-          <UsersStatsBoardoButton />
+          <UsersStatsBoardButton />
         </div>
         <div className="flex-1">
           <Button isActive to={`/day/${days}?step=exile`}>

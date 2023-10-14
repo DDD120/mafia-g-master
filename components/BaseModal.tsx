@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { createPortal } from "react-dom"
-import Button from "./button/Button"
+import Button from "./Button/Button"
 
 interface Props {
   title: string

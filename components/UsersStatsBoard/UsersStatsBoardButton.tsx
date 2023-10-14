@@ -3,10 +3,10 @@
 import useModal from "@/hooks/useModal"
 
 import { BsClipboardPulse } from "react-icons/bs"
-import Button from "../button/Button"
+import Button from "../Button/Button"
 import UsersStatsBoard from "./UsersStatsBoard"
 
-function PlayerStatsBoardoButton() {
+function PlayerStatsBoardButton() {
   const {
     modal: { isOpen },
     openModal,
@@ -23,4 +23,4 @@ function PlayerStatsBoardoButton() {
   )
 }
 
-export default PlayerStatsBoardoButton
+export default PlayerStatsBoardButton

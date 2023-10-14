@@ -1,7 +1,7 @@
 "use client"
 
 import { useMafiaContext } from "@/providers/MafiaProvider"
-import Button from "../button/Button"
+import Button from "../Button/Button"
 import { useSelector } from "@xstate/react"
 import { useEffect, useState } from "react"
 import useAliveUsers from "@/hooks/useAliveUsers"

@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect, ChangeEvent } from "react"
 import { useMafiaContext } from "@/providers/MafiaProvider"
 import { useSelector } from "@xstate/react"
-import Button from "@/components/button/Button"
+import Button from "@/components/Button/Button"
 import RoleSelectionInput from "./RoleSelectionInput"
 import { userNumberByRole } from "@/lib/setting"
 
