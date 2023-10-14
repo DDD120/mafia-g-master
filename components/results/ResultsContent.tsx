@@ -43,7 +43,7 @@ function ResultsContent() {
 
   return (
     <>
-      <div className="scrollbar-hide overflow-y-auto">
+      <div className="scrollbar-hide overflow-y-auto sm:scrollbar-default sm:pr-2">
         <Congratulation winner={winner} />
         <ResultsSummary
           aliveUsers={aliveUsers}

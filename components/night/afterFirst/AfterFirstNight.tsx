@@ -48,7 +48,7 @@ function AfterFirstNight() {
 
   return (
     <>
-      <div className="scrollbar-hide overflow-y-auto">
+      <div className="scrollbar-hide overflow-y-auto sm:scrollbar-default sm:pr-2">
         <div className="flex flex-col gap-4">
           <Script>
             밤이 되었습니다.

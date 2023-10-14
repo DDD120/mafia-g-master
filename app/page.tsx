@@ -3,7 +3,7 @@ import MafiaLottie from "@/components/MafiaLottie"
 
 function Home() {
   return (
-    <main className="h-full flex flex-col gap-1 items-center justify-center text-center">
+    <main className="flex-1 h-full flex flex-col gap-1 items-center justify-center text-center">
       <div className="w-44 h-44 overflow-hidden rounded-full mb-4">
         <MafiaLottie />
       </div>

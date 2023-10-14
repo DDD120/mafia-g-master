@@ -6,3 +6,15 @@ html,
 body {
   height: 100%;
 }
+
+
+/* scrollbar */
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d5000055;
+  border-radius: 5px;
+}

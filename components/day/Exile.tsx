@@ -25,7 +25,7 @@ function Exile() {
 
   return (
     <>
-      <div className="scrollbar-hide overflow-y-auto">
+      <div className="scrollbar-hide overflow-y-auto sm:scrollbar-default sm:pr-2">
         <Script>추방할 사람을 선택하세요.</Script>
         <div className="my-2">
           <ul>

@@ -16,7 +16,7 @@ function BaseModal({ children, title, onClose }: Props) {
   const renderModal = () => {
     if (!render) return
     return createPortal(
-      <div className="max-h-[90%] h-auto bg-black border-2 border-opacity-50 border-red fixed p-4 top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] w-11/12 rounded-lg overflow-hidden flex">
+      <div className="max-h-[90%] sm:max-w-[600px] h-auto bg-black border-2 border-opacity-50 border-red fixed p-4 top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] w-11/12 rounded-lg overflow-hidden flex">
         <div className="flex-1 flex flex-col items-center gap-4">
           <h2 className="font-bold text-2xl">{title}</h2>
           <div className="scrollbar-hide overflow-y-auto w-full">

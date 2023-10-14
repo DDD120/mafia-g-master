@@ -75,7 +75,7 @@ function FirstNight() {
 
   return (
     <>
-      <div className="scrollbar-hide overflow-y-auto">
+      <div className="scrollbar-hide sm:scrollbar-default sm:pr-2 overflow-y-auto">
         <div className="flex flex-col gap-4">
           <RoleSelectionInput
             includeName
