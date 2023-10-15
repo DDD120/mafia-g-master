@@ -8,7 +8,6 @@ import { KeyboardEventHandler, useCallback, useEffect, useState } from "react"
 import { MultiValue } from "react-select"
 import { useMafiaContext } from "@/providers/MafiaProvider"
 import { NumberOfUsersOptions, Option, createOption } from "@/lib/setting"
-import MainContentLayout from "../layout/MainContentLayout"
 
 function SettingContent() {
   const [numberOfUsers, setNumberOfUsers] = useState(
@@ -70,28 +69,26 @@ function SettingContent() {
 
   return (
     <>
-      <MainContentLayout>
-        <div className="flex flex-col gap-4">
-          <UsersCountSelect
-            onChange={handleUsersCountChange}
-            options={NumberOfUsersOptions}
-          />
-          <UserNamesInput
-            numberOfUsers={numberOfUsers}
-            userNames={userNames}
-            userInputValue={userInputValue}
-            isRequired={isRequired}
-            handleNamesChange={handleNamesChange}
-            handleNamesInputChange={handleNamesInputChange}
-            handleKeyDown={handleKeyDown}
-          />
-          <AddJob
-            numberOfUsers={numberOfUsers}
-            setSelectedPolice={setSelectedPolice}
-            setSelectedDoctor={setSelectedDoctor}
-          />
-        </div>
-      </MainContentLayout>
+      <div className="flex flex-col gap-4">
+        <UsersCountSelect
+          onChange={handleUsersCountChange}
+          options={NumberOfUsersOptions}
+        />
+        <UserNamesInput
+          numberOfUsers={numberOfUsers}
+          userNames={userNames}
+          userInputValue={userInputValue}
+          isRequired={isRequired}
+          handleNamesChange={handleNamesChange}
+          handleNamesInputChange={handleNamesInputChange}
+          handleKeyDown={handleKeyDown}
+        />
+        <AddJob
+          numberOfUsers={numberOfUsers}
+          setSelectedPolice={setSelectedPolice}
+          setSelectedDoctor={setSelectedDoctor}
+        />
+      </div>
       <Button
         className="w-full shrink-0"
         to="/night/1"
