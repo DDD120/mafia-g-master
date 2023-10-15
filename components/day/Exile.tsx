@@ -4,7 +4,7 @@ import useAliveUsers from "@/hooks/useAliveUsers"
 import Script from "../Script"
 import Button from "../button/Button"
 import SelectInput from "../SelectInput"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { useMafiaContext } from "@/providers/MafiaProvider"
 import { useParams } from "next/navigation"
 
@@ -12,6 +12,7 @@ function Exile() {
   const mafiaServices = useMafiaContext()
   const { aliveUsers } = useAliveUsers()
   const [selectedUser, setSelectedUesr] = useState<string | null>(null)
+  const [isRequired, setIsRequred] = useState(false)
   const { days } = useParams()
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +22,12 @@ function Exile() {
     mafiaServices.send("AFTERFIRSTNIGHT", {
       exiledUser: selectedUser,
     })
+    setIsRequred(false)
   }
+
+  useEffect(() => {
+    if (selectedUser) setIsRequred(true)
+  }, [selectedUser])
 
   return (
     <>
@@ -45,7 +51,7 @@ function Exile() {
       <div className="shrink-0">
         <Button
           to={`/night/${+days + 1}`}
-          isActive={!!selectedUser}
+          isActive={isRequired}
           onClick={handleButtonClick}
         >
           추방 선택 완료
