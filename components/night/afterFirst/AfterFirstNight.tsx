@@ -42,7 +42,7 @@ function AfterFirstNight() {
     const { mafia, doctor } = pointOut
     const isRequired =
       (!!mafia && (roles.includes("doctor") ? !!doctor : true)) ||
-      !aliveDoctor.length
+      (!!mafia && !aliveDoctor.length)
     isRequired ? setIsRequired(true) : setIsRequired(false)
   }, [roles, aliveDoctor, pointOut])
 
