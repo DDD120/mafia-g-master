@@ -8,6 +8,7 @@ import { useMafiaContext } from "@/providers/MafiaProvider"
 import { useSelector } from "@xstate/react"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
+import UsersStatsBoardButton from "@/components/UsersStatsBoard/UsersStatsBoardButton"
 
 interface PointOut {
   mafia: string | null
@@ -112,14 +113,19 @@ function AfterFirstNight() {
           )}
         </div>
       </div>
-      <div className="shrink-0">
-        <Button
-          to={`/day/${days}?step=debate`}
-          onClick={handleButtonClick}
-          isActive={isRequired}
-        >
-          지목 완료
-        </Button>
+      <div className="shrink-0 flex gap-2">
+        <div className="flex justify-center items-center">
+          <UsersStatsBoardButton />
+        </div>
+        <div className="flex-1">
+          <Button
+            to={`/day/${days}?step=debate`}
+            onClick={handleButtonClick}
+            isActive={isRequired}
+          >
+            지목 완료
+          </Button>
+        </div>
       </div>
     </>
   )

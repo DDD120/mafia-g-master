@@ -7,6 +7,7 @@ import SelectInput from "../SelectInput"
 import { ChangeEvent, useEffect, useState } from "react"
 import { useMafiaContext } from "@/providers/MafiaProvider"
 import { useParams } from "next/navigation"
+import UsersStatsBoardButton from "../UsersStatsBoard/UsersStatsBoardButton"
 
 function Exile() {
   const mafiaServices = useMafiaContext()
@@ -48,14 +49,19 @@ function Exile() {
           </ul>
         </div>
       </div>
-      <div className="shrink-0">
-        <Button
-          to={`/night/${+days + 1}`}
-          isActive={isRequired}
-          onClick={handleButtonClick}
-        >
-          추방 선택 완료
-        </Button>
+      <div className="shrink-0 flex gap-2">
+        <div className="flex justify-center items-center">
+          <UsersStatsBoardButton />
+        </div>
+        <div className="flex-1">
+          <Button
+            to={`/night/${+days + 1}`}
+            isActive={isRequired}
+            onClick={handleButtonClick}
+          >
+            추방 선택 완료
+          </Button>
+        </div>
       </div>
     </>
   )

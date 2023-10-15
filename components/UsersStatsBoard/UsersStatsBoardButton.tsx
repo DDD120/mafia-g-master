@@ -5,7 +5,7 @@ import { BsClipboardPulse } from "react-icons/bs"
 import Button from "../button/Button"
 import UsersStatsBoard from "./UsersStatsBoard"
 
-function PlayerStatsBoardButton() {
+function UsersStatsBoardButton() {
   const {
     modal: { isOpen },
     openModal,
@@ -22,4 +22,4 @@ function PlayerStatsBoardButton() {
   )
 }
 
-export default PlayerStatsBoardButton
+export default UsersStatsBoardButton
