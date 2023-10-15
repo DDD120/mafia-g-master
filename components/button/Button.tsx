@@ -1,10 +1,12 @@
 import Link from "next/link"
+import { twMerge } from "tailwind-merge"
 
 interface Props {
   children: React.ReactNode
   layoutMode?: "inline" | "fullWidth"
   isActive?: boolean
   to?: string
+  className?: string
   onClick?: () => void
 }
 
@@ -13,17 +15,21 @@ function Button({
   isActive = false,
   children,
   to,
+  className,
   onClick,
 }: Props) {
   if (to) {
     return (
       <Link
         href={to}
-        className={`w-full h-[48px]  text-gray-50 rounded-lg text-xl font-black px-4 transition flex justify-center items-center ${
+        className={twMerge(
+          "w-full h-[48px]  text-gray-50 rounded-lg text-xl font-black px-4 transition flex justify-center items-center",
           isActive
             ? "bg-red hover:brightness-105"
-            : "pointer-events-none bg-zinc-400"
-        } ${layoutMode === "inline" && "max-w-[300px]"}`}
+            : "pointer-events-none bg-zinc-400",
+          layoutMode === "inline" && "max-w-[300px]",
+          className
+        )}
         onClick={onClick}
       >
         {children}
@@ -34,9 +40,12 @@ function Button({
   return (
     <button
       disabled={!isActive}
-      className={`w-full h-[48px] bg-red text-gray-50 rounded-lg text-xl font-black px-4 transition disabled:bg-zinc-400 ${
-        isActive && "hover:brightness-105"
-      } ${layoutMode === "inline" && "max-w-[300px]"}`}
+      className={twMerge(
+        "w-full h-[48px] bg-red text-gray-50 rounded-lg text-xl font-black px-4 transition disabled:bg-zinc-400",
+        isActive && "hover:brightness-105",
+        layoutMode === "inline" && "max-w-[300px]",
+        className
+      )}
       onClick={onClick}
     >
       {children}

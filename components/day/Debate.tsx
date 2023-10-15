@@ -23,11 +23,9 @@ function Debate({ days }: Props) {
         <div className="flex justify-center items-center">
           <UsersStatsBoardButton />
         </div>
-        <div className="flex-1">
-          <Button isActive to={`/day/${days}?step=exile`}>
-            토론 완료
-          </Button>
-        </div>
+        <Button className="flex-1" isActive to={`/day/${days}?step=exile`}>
+          토론 완료
+        </Button>
       </div>
     </>
   )

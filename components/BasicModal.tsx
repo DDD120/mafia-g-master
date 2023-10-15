@@ -10,7 +10,7 @@ interface Props {
   children: React.ReactNode
 }
 
-function BaseModal({ children, title, onClose }: Props) {
+function BasicModal({ children, title, onClose }: Props) {
   const [render, setRender] = useState<HTMLDivElement | null>(null)
 
   const renderModal = () => {
@@ -22,11 +22,14 @@ function BaseModal({ children, title, onClose }: Props) {
           <div className="scrollbar-hide overflow-y-auto w-full">
             {children}
           </div>
-          <div className="shrink-0 w-full">
-            <Button isActive layoutMode="fullWidth" onClick={onClose}>
-              확인
-            </Button>
-          </div>
+          <Button
+            className="shrink-0 w-full"
+            isActive
+            layoutMode="fullWidth"
+            onClick={onClose}
+          >
+            확인
+          </Button>
         </div>
       </div>,
       document.getElementById("modal")!
@@ -44,4 +47,4 @@ function BaseModal({ children, title, onClose }: Props) {
   )
 }
 
-export default BaseModal
+export default BasicModal

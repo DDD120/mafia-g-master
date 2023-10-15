@@ -1,4 +1,4 @@
-import BasicLayout from "@/components/BasicLayout"
+import BasicLayout from "@/components/layout/BasicLayout"
 import AfterFirstNight from "@/components/night/afterFirst/AfterFirstNight"
 import FirstNight from "@/components/night/first/FirstNight"
 import { daysToKorean } from "@/lib/toKorean"

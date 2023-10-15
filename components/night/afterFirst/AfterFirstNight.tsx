@@ -9,6 +9,7 @@ import { useSelector } from "@xstate/react"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import UsersStatsBoardButton from "@/components/UsersStatsBoard/UsersStatsBoardButton"
+import MainContentLayout from "@/components/layout/MainContentLayout"
 
 interface PointOut {
   mafia: string | null
@@ -49,7 +50,7 @@ function AfterFirstNight() {
 
   return (
     <>
-      <div className="scrollbar-hide overflow-y-auto sm:scrollbar-default sm:pr-2">
+      <MainContentLayout>
         <div className="flex flex-col gap-4">
           <Script>
             밤이 되었습니다.
@@ -112,20 +113,19 @@ function AfterFirstNight() {
             </>
           )}
         </div>
-      </div>
+      </MainContentLayout>
       <div className="shrink-0 flex gap-2">
         <div className="flex justify-center items-center">
           <UsersStatsBoardButton />
         </div>
-        <div className="flex-1">
-          <Button
-            to={`/day/${days}?step=debate`}
-            onClick={handleButtonClick}
-            isActive={isRequired}
-          >
-            지목 완료
-          </Button>
-        </div>
+        <Button
+          className="flex-1"
+          to={`/day/${days}?step=debate`}
+          onClick={handleButtonClick}
+          isActive={isRequired}
+        >
+          지목 완료
+        </Button>
       </div>
     </>
   )

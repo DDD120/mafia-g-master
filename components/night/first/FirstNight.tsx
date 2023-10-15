@@ -6,6 +6,7 @@ import { useSelector } from "@xstate/react"
 import Button from "@/components/button/Button"
 import RoleSelectionInput from "./RoleSelectionInput"
 import { userNumberByRole } from "@/lib/setting"
+import MainContentLayout from "@/components/layout/MainContentLayout"
 
 interface SelectedUsersByRoles {
   mafia: string[]
@@ -75,7 +76,7 @@ function FirstNight() {
 
   return (
     <>
-      <div className="scrollbar-hide sm:scrollbar-default sm:pr-2 overflow-y-auto">
+      <MainContentLayout>
         <div className="flex flex-col gap-4">
           <RoleSelectionInput
             includeName
@@ -118,16 +119,15 @@ function FirstNight() {
             </RoleSelectionInput>
           )}
         </div>
-      </div>
-      <div className="shrink-0">
-        <Button
-          to="/day/1?step=debate"
-          isActive={isRequired}
-          onClick={handleButtonClick}
-        >
-          역할 선정 완료
-        </Button>
-      </div>
+      </MainContentLayout>
+      <Button
+        className="shrink-0"
+        to="/day/1?step=debate"
+        isActive={isRequired}
+        onClick={handleButtonClick}
+      >
+        역할 선정 완료
+      </Button>
     </>
   )
 }

@@ -1,4 +1,4 @@
-import BasicLayout from "@/components/BasicLayout"
+import BasicLayout from "@/components/layout/BasicLayout"
 import SettingContent from "@/components/setting/SettingContent"
 
 function Setting() {

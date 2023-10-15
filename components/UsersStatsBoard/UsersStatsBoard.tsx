@@ -2,7 +2,7 @@
 
 import { useMafiaContext } from "@/providers/MafiaProvider"
 import { useSelector } from "@xstate/react"
-import BaseModal from "../BaseModal"
+import BasicModal from "../BasicModal"
 import UserStats from "./UserStats"
 import useAliveUsers from "@/hooks/useAliveUsers"
 
@@ -20,7 +20,7 @@ function UsersStatsBoard({ onClose }: Props) {
   const diedLength = users.length - aliveUsers.length
 
   return (
-    <BaseModal title="플레이어 상태 보드" onClose={onClose}>
+    <BasicModal title="플레이어 상태 보드" onClose={onClose}>
       <h2 className="font-bold text-xl">생존 플레이어</h2>
       <div className="flex flex-wrap gap-4 my-4">
         {mafia.alive.map((user) => (
@@ -55,7 +55,7 @@ function UsersStatsBoard({ onClose }: Props) {
           </div>
         </>
       )}
-    </BaseModal>
+    </BasicModal>
   )
 }
 

@@ -8,6 +8,7 @@ import { ChangeEvent, useEffect, useState } from "react"
 import { useMafiaContext } from "@/providers/MafiaProvider"
 import { useParams } from "next/navigation"
 import UsersStatsBoardButton from "../UsersStatsBoard/UsersStatsBoardButton"
+import MainContentLayout from "../layout/MainContentLayout"
 
 function Exile() {
   const mafiaServices = useMafiaContext()
@@ -32,7 +33,7 @@ function Exile() {
 
   return (
     <>
-      <div className="scrollbar-hide overflow-y-auto sm:scrollbar-default sm:pr-2">
+      <MainContentLayout>
         <Script>추방할 사람을 선택하세요.</Script>
         <div className="my-2">
           <ul>
@@ -48,20 +49,19 @@ function Exile() {
             ))}
           </ul>
         </div>
-      </div>
+      </MainContentLayout>
       <div className="shrink-0 flex gap-2">
         <div className="flex justify-center items-center">
           <UsersStatsBoardButton />
         </div>
-        <div className="flex-1">
-          <Button
-            to={`/night/${+days + 1}`}
-            isActive={isRequired}
-            onClick={handleButtonClick}
-          >
-            추방 선택 완료
-          </Button>
-        </div>
+        <Button
+          className="flex-1"
+          to={`/night/${+days + 1}`}
+          isActive={isRequired}
+          onClick={handleButtonClick}
+        >
+          추방 선택 완료
+        </Button>
       </div>
     </>
   )

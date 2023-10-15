@@ -9,6 +9,7 @@ import { Citizen, CitizenRoles, Roles } from "@/store/types"
 import Congratulation from "./Congratulation"
 import ResultsSummary from "./ResultsSummary"
 import { userRoleMap } from "@/store/mafia"
+import MainContentLayout from "../layout/MainContentLayout"
 
 function ResultsContent() {
   const [mafiaUsers, setMafiaUsers] = useState<string[]>([])
@@ -43,19 +44,17 @@ function ResultsContent() {
 
   return (
     <>
-      <div className="scrollbar-hide overflow-y-auto sm:scrollbar-default sm:pr-2">
+      <MainContentLayout>
         <Congratulation winner={winner} />
         <ResultsSummary
           aliveUsers={aliveUsers}
           mafiaUsers={mafiaUsers}
           citizenUsers={citizenUsers}
         />
-      </div>
-      <div className="shrink-0">
-        <Button isActive to="/" onClick={handleButtonClick}>
-          메인 화면으로 가기
-        </Button>
-      </div>
+      </MainContentLayout>
+      <Button className="shrink-0" isActive to="/" onClick={handleButtonClick}>
+        메인 화면으로 가기
+      </Button>
     </>
   )
 }
