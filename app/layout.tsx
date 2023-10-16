@@ -19,7 +19,7 @@ const serif = Noto_Serif_KR({
 })
 
 export const metadata: Metadata = {
-  title: "Mafia MC",
+  title: "Mafia G Master",
   description: "오프라인 마피아 게임 진행 가이드",
 }
 

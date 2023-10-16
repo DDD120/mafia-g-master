@@ -7,7 +7,7 @@ function Home() {
       <div className="w-44 h-44 overflow-hidden rounded-full mb-4">
         <MafiaLottie />
       </div>
-      <h1 className="text-red font-black text-4xl">마피아 MC</h1>
+      <h1 className="text-red font-black text-4xl">마피아 G 마스터</h1>
       <p className="mb-4">오프라인 마피아 게임 진행 가이드</p>
       <Button layoutMode="inline" isActive to="/setting">
         시작하기
