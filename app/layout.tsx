@@ -19,8 +19,8 @@ const serif = Noto_Serif_KR({
 })
 
 export const metadata: Metadata = {
-  title: "Mafia Master",
-  description: "오프라인 마피아 게임 진행 도우미",
+  title: "Mafia MC",
+  description: "오프라인 마피아 게임 진행 가이드",
 }
 
 function RootLayout({ children }: { children: React.ReactNode }) {
