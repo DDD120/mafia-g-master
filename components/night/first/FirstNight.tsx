@@ -7,6 +7,7 @@ import Button from "@/components/button/Button"
 import RoleSelectionInput from "./RoleSelectionInput"
 import { userNumberByRole } from "@/lib/setting"
 import MainContentLayout from "@/components/layout/MainContentLayout"
+import useButton from "@/hooks/useButton"
 
 interface SelectedUsersByRoles {
   mafia: string[]
@@ -24,7 +25,7 @@ function FirstNight() {
       doctor: [],
       police: [],
     })
-  const [isRequired, setIsRequired] = useState(false)
+  const { isRequired, setIsRequired, onButtonClick, isLoading } = useButton()
 
   const changeUsers = (
     e: ChangeEvent<HTMLInputElement>,
@@ -57,7 +58,6 @@ function FirstNight() {
         ? selectedUsersByRoles.doctor
         : undefined,
     })
-    setIsRequired(false)
   }
 
   useEffect(() => {
@@ -72,11 +72,11 @@ function FirstNight() {
       (roles.includes("doctor") ? doctorCount : 0) === doctor.length &&
       (roles.includes("police") ? policeCount : 0) === police.length
     isRequired ? setIsRequired(true) : setIsRequired(false)
-  }, [users.length, selectedUsersByRoles, roles])
+  }, [users.length, selectedUsersByRoles, roles, setIsRequired])
 
   return (
     <>
-      <MainContentLayout>
+      <MainContentLayout isLoading={isLoading}>
         <div className="flex flex-col gap-4">
           <RoleSelectionInput
             includeName
@@ -124,7 +124,7 @@ function FirstNight() {
         className="shrink-0"
         to="/day/1?step=debate"
         isActive={isRequired}
-        onClick={handleButtonClick}
+        onClick={() => onButtonClick(handleButtonClick)}
       >
         역할 선정 완료
       </Button>

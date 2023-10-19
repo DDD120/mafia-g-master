@@ -8,6 +8,8 @@ import { KeyboardEventHandler, useCallback, useEffect, useState } from "react"
 import { MultiValue } from "react-select"
 import { useMafiaContext } from "@/providers/MafiaProvider"
 import { NumberOfUsersOptions, Option, createOption } from "@/lib/setting"
+import useButton from "@/hooks/useButton"
+import MainContentLayout from "../layout/MainContentLayout"
 
 function SettingContent() {
   const [numberOfUsers, setNumberOfUsers] = useState(
@@ -15,10 +17,10 @@ function SettingContent() {
   )
   const [userInputValue, setUserInputValue] = useState("")
   const [userNames, setUserNames] = useState<readonly Option<string>[]>([])
-  const [isRequired, setIsRequired] = useState(false)
   const [selectedPolice, setSelectedPolice] = useState(false)
   const [selectedDoctor, setSelectedDoctor] = useState(false)
   const mafiaServices = useMafiaContext()
+  const { isRequired, setIsRequired, onButtonClick, isLoading } = useButton()
 
   const handleKeyDown: KeyboardEventHandler = (event) => {
     if (!userInputValue) return
@@ -58,41 +60,42 @@ function SettingContent() {
       users: userNames.map((name) => name.value),
       roles,
     })
-    setIsRequired(false)
   }
 
   useEffect(() => {
     userNames.length < numberOfUsers
       ? setIsRequired(false)
       : setIsRequired(true)
-  }, [userNames.length, numberOfUsers])
+  }, [userNames.length, numberOfUsers, setIsRequired])
 
   return (
     <>
-      <div className="flex flex-col gap-4">
-        <UsersCountSelect
-          onChange={handleUsersCountChange}
-          options={NumberOfUsersOptions}
-        />
-        <UserNamesInput
-          numberOfUsers={numberOfUsers}
-          userNames={userNames}
-          userInputValue={userInputValue}
-          isRequired={isRequired}
-          handleNamesChange={handleNamesChange}
-          handleNamesInputChange={handleNamesInputChange}
-          handleKeyDown={handleKeyDown}
-        />
-        <AddJob
-          numberOfUsers={numberOfUsers}
-          setSelectedPolice={setSelectedPolice}
-          setSelectedDoctor={setSelectedDoctor}
-        />
-      </div>
+      <MainContentLayout isLoading={isLoading}>
+        <div className="flex flex-col gap-4">
+          <UsersCountSelect
+            onChange={handleUsersCountChange}
+            options={NumberOfUsersOptions}
+          />
+          <UserNamesInput
+            numberOfUsers={numberOfUsers}
+            userNames={userNames}
+            userInputValue={userInputValue}
+            isRequired={isRequired}
+            handleNamesChange={handleNamesChange}
+            handleNamesInputChange={handleNamesInputChange}
+            handleKeyDown={handleKeyDown}
+          />
+          <AddJob
+            numberOfUsers={numberOfUsers}
+            setSelectedPolice={setSelectedPolice}
+            setSelectedDoctor={setSelectedDoctor}
+          />
+        </div>
+      </MainContentLayout>
       <Button
         className="w-full shrink-0"
         to="/night/1"
-        onClick={handleButtonClick}
+        onClick={() => onButtonClick(handleButtonClick)}
         isActive={isRequired}
       >
         설정 완료

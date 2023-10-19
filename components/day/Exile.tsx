@@ -9,13 +9,14 @@ import { useMafiaContext } from "@/providers/MafiaProvider"
 import { useParams } from "next/navigation"
 import UsersStatsBoardButton from "../UsersStatsBoard/UsersStatsBoardButton"
 import MainContentLayout from "../layout/MainContentLayout"
+import useButton from "@/hooks/useButton"
 
 function Exile() {
+  const [selectedUser, setSelectedUesr] = useState<string | null>(null)
   const mafiaServices = useMafiaContext()
   const { aliveUsers } = useAliveUsers()
-  const [selectedUser, setSelectedUesr] = useState<string | null>(null)
-  const [isRequired, setIsRequred] = useState(false)
   const { days } = useParams()
+  const { isRequired, setIsRequired, onButtonClick, isLoading } = useButton()
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSelectedUesr(e.target.value)
@@ -24,16 +25,15 @@ function Exile() {
     mafiaServices.send("AFTERFIRSTNIGHT", {
       exiledUser: selectedUser,
     })
-    setIsRequred(false)
   }
 
   useEffect(() => {
-    if (selectedUser) setIsRequred(true)
-  }, [selectedUser])
+    if (selectedUser) setIsRequired(true)
+  }, [selectedUser, setIsRequired])
 
   return (
     <>
-      <MainContentLayout>
+      <MainContentLayout isLoading={isLoading}>
         <Script>추방할 사람을 선택하세요.</Script>
         <div className="my-2">
           <ul>
@@ -58,7 +58,7 @@ function Exile() {
           className="flex-1"
           to={`/night/${+days + 1}`}
           isActive={isRequired}
-          onClick={handleButtonClick}
+          onClick={() => onButtonClick(handleButtonClick)}
         >
           추방 선택 완료
         </Button>

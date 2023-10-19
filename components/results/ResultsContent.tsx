@@ -44,7 +44,7 @@ function ResultsContent() {
 
   return (
     <>
-      <MainContentLayout>
+      <MainContentLayout isLoading={false}>
         <Congratulation winner={winner} />
         <ResultsSummary
           aliveUsers={aliveUsers}

@@ -10,6 +10,7 @@ import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import UsersStatsBoardButton from "@/components/UsersStatsBoard/UsersStatsBoardButton"
 import MainContentLayout from "@/components/layout/MainContentLayout"
+import useButton from "@/hooks/useButton"
 
 interface PointOut {
   mafia: string | null
@@ -23,10 +24,10 @@ function AfterFirstNight() {
     mafia: null,
     doctor: null,
   })
-  const [isRequired, setIsRequired] = useState(false)
   const { aliveUsers, aliveMafia, aliveCitizens, alivePolice, aliveDoctor } =
     useAliveUsers()
   const { days } = useParams()
+  const { isRequired, setIsRequired, onButtonClick, isLoading } = useButton()
 
   const handlePointOutChange = (role: keyof PointOut, name: string) => {
     setPointOut((prev) => ({ ...prev, [role]: name }))
@@ -37,7 +38,6 @@ function AfterFirstNight() {
       mafiaPointOut: pointOut.mafia,
       doctorPointOut: pointOut.doctor,
     })
-    setIsRequired(false)
   }
 
   useEffect(() => {
@@ -46,11 +46,11 @@ function AfterFirstNight() {
       (!!mafia && (roles.includes("doctor") ? !!doctor : true)) ||
       (!!mafia && !aliveDoctor.length)
     isRequired ? setIsRequired(true) : setIsRequired(false)
-  }, [roles, aliveDoctor, pointOut])
+  }, [roles, aliveDoctor, pointOut, setIsRequired])
 
   return (
     <>
-      <MainContentLayout>
+      <MainContentLayout isLoading={isLoading}>
         <div className="flex flex-col gap-4">
           <Script>
             밤이 되었습니다.
@@ -121,7 +121,7 @@ function AfterFirstNight() {
         <Button
           className="flex-1"
           to={`/day/${days}?step=debate`}
-          onClick={handleButtonClick}
+          onClick={() => onButtonClick(handleButtonClick)}
           isActive={isRequired}
         >
           지목 완료
