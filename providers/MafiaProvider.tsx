@@ -1,10 +1,11 @@
 "use client"
 
-import { createContext, useContext, useLayoutEffect } from "react"
+import { createContext, useContext, useEffect, useLayoutEffect } from "react"
 import { useInterpret, useSelector } from "@xstate/react"
 import { InterpreterFrom } from "xstate"
 import mafiaMachine from "@/store/mafia"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import useStepTransitions from "@/hooks/useStepTransitions"
 
 interface Props {
   children: React.ReactNode
@@ -16,12 +17,27 @@ export const MafiaContext = createContext(
 
 export function MafiaProvider({ children }: Props) {
   const mafiaService = useInterpret(mafiaMachine)
-  const done = useSelector(mafiaService, (state) => state.done)
+  const matches = useSelector(mafiaService, (state) => state.matches)
   const router = useRouter()
+  const path = usePathname()
 
   useLayoutEffect(() => {
-    if (done) router.push("/results")
-  }, [done, router])
+    if (matches("end")) router.push("/results")
+    history.replaceState(null, "", "/")
+  }, [router, path, matches])
+
+  useEffect(() => {
+    const reset = () => {
+      window.addEventListener("popstate", () => {
+        mafiaService.send("START")
+      })
+    }
+    reset()
+
+    return () => {
+      window.removeEventListener("popstate", reset)
+    }
+  }, [mafiaService])
 
   return (
     <MafiaContext.Provider value={mafiaService}>

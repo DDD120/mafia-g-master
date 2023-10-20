@@ -20,6 +20,10 @@ export interface Context {
   citizen: Citizen
 }
 
+interface SettingEvent {
+  type: "SETTING"
+}
+
 interface PlayingEvent {
   type: "PLAYING"
   users: string[]
@@ -29,8 +33,8 @@ interface FirstDayEvent {
   type: "FIRSTDAY"
   mafia: string[]
   normal: string[]
-  doctor?: string[]
-  police?: string[]
+  doctor: string[]
+  police: string[]
 }
 
 interface AfterFirstDayEvent {
@@ -44,8 +48,14 @@ interface AfterFirstNightEvent {
   exiledUser: string
 }
 
+interface StartEvent {
+  type: "START"
+}
+
 export type Events =
+  | SettingEvent
   | PlayingEvent
   | FirstDayEvent
   | AfterFirstDayEvent
   | AfterFirstNightEvent
+  | StartEvent

@@ -6,10 +6,10 @@ import UserNamesInput from "./UserNamesInput"
 import UsersCountSelect from "./UsersCountSelect"
 import { KeyboardEventHandler, useCallback, useEffect, useState } from "react"
 import { MultiValue } from "react-select"
-import { useMafiaContext } from "@/providers/MafiaProvider"
 import { NumberOfUsersOptions, Option, createOption } from "@/lib/setting"
 import useButton from "@/hooks/useButton"
 import MainContentLayout from "../layout/MainContentLayout"
+import useStepTransitions from "@/hooks/useStepTransitions"
 
 function SettingContent() {
   const [numberOfUsers, setNumberOfUsers] = useState(
@@ -19,7 +19,7 @@ function SettingContent() {
   const [userNames, setUserNames] = useState<readonly Option<string>[]>([])
   const [selectedPolice, setSelectedPolice] = useState(false)
   const [selectedDoctor, setSelectedDoctor] = useState(false)
-  const mafiaServices = useMafiaContext()
+  const { sendPlaying } = useStepTransitions()
   const { isRequired, setIsRequired, onButtonClick, isLoading } = useButton()
 
   const handleKeyDown: KeyboardEventHandler = (event) => {
@@ -56,7 +56,7 @@ function SettingContent() {
     const roles = ["mafia", "normal"]
     if (selectedPolice) roles.push("police")
     if (selectedDoctor) roles.push("doctor")
-    mafiaServices.send("PLAYING", {
+    sendPlaying({
       users: userNames.map((name) => name.value),
       roles,
     })

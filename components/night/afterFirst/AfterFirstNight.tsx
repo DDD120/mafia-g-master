@@ -11,6 +11,7 @@ import { useEffect, useState } from "react"
 import UsersStatsBoardButton from "@/components/UsersStatsBoard/UsersStatsBoardButton"
 import MainContentLayout from "@/components/layout/MainContentLayout"
 import useButton from "@/hooks/useButton"
+import useStepTransitions from "@/hooks/useStepTransitions"
 
 interface PointOut {
   mafia: string | null
@@ -27,6 +28,7 @@ function AfterFirstNight() {
   const { aliveUsers, aliveMafia, aliveCitizens, alivePolice, aliveDoctor } =
     useAliveUsers()
   const { days } = useParams()
+  const { sendAfterFirstDay } = useStepTransitions()
   const { isRequired, setIsRequired, onButtonClick, isLoading } = useButton()
 
   const handlePointOutChange = (role: keyof PointOut, name: string) => {
@@ -34,8 +36,8 @@ function AfterFirstNight() {
   }
 
   const handleButtonClick = () => {
-    mafiaServices.send("AFTERFIRSTDAY", {
-      mafiaPointOut: pointOut.mafia,
+    sendAfterFirstDay({
+      mafiaPointOut: pointOut.mafia!,
       doctorPointOut: pointOut.doctor,
     })
   }

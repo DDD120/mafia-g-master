@@ -7,6 +7,7 @@ interface Props {
   isActive?: boolean
   to?: string
   className?: string
+  replace?: boolean
   onClick?: () => void
 }
 
@@ -16,6 +17,7 @@ function Button({
   children,
   to,
   className,
+  replace = true,
   onClick,
 }: Props) {
   if (to) {
@@ -31,6 +33,7 @@ function Button({
           className
         )}
         onClick={onClick}
+        replace={replace}
       >
         {children}
       </Link>

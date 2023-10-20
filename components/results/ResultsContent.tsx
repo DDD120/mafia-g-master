@@ -8,8 +8,8 @@ import useAliveUsers from "@/hooks/useAliveUsers"
 import { Citizen, CitizenRoles, Roles } from "@/store/types"
 import Congratulation from "./Congratulation"
 import ResultsSummary from "./ResultsSummary"
-import { userRoleMap } from "@/store/mafia"
 import MainContentLayout from "../layout/MainContentLayout"
+import useStepTransitions from "@/hooks/useStepTransitions"
 
 function ResultsContent() {
   const [mafiaUsers, setMafiaUsers] = useState<string[]>([])
@@ -22,11 +22,10 @@ function ResultsContent() {
     (state) => state.context
   )
   const { aliveUsers } = useAliveUsers()
+  const { sendStart } = useStepTransitions()
 
   const handleButtonClick = () => {
-    mafiaServices.stop()
-    mafiaServices.start()
-    userRoleMap.clear()
+    sendStart()
   }
 
   useEffect(() => {

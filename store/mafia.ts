@@ -1,4 +1,4 @@
-import { createMachine } from "xstate"
+import { createMachine, assign as _assign } from "xstate"
 import { assign } from "@xstate/immer"
 import { Context, Events, Roles } from "./types"
 
@@ -31,9 +31,9 @@ const initialContext: Context = {
 
 const mafiaeMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QFsCGAzAlqgdLMALgZgHZQDEACgDICCAmgJIByA4gNoAMAuoqAA4B7WJmKCSfEAA9EARgBssnAGZVygCwBWRQA4A7HuU6ANCACeiAEybOOdQvnz18o5b2WdAX0+m0WXPwANqhmpBRcvEggQiJiElEyCLKcnMo4nJqWnFqyOvLu6pamFgiW8po4OgCcmjr26lVONsrevhjYOEEhYTgkmFAAFgTkAGKMAEoAygAqACIMEZIxopjikona6nZussnyVVV6nI7FiMqyVXYHjSnKhrnyrSB+HV2hZL39Q+S0I9MAouMxlM5gseEthCs1glEJttnpdscDkcTuZEPYKrJLA0qspaud8honi8AsF3lAcBAQj8-oDgTNmIxWAAJaaLKLLOLrM6qHBNHQ2TRaLR6RqnJI2FSqDzyMpaDLubw+EAkQQQOCSEkQ2KreKgRIAWnk4oNljS1wtloOLWVJLwhGIZG1UL10nRRTRpTyOCOOmUbhunAFzmJ7VJ3SdHMhXJhpQMfK0Aoyws0ouNnpcOAcTnO-usMs0of8nTJPT6gwIzpj+rO1gTtUFKbT4rcWyaBj0zRctyLr1LH3LQxwWAATrACMwvpWozroTWEMoqrZOO4quo-epF5vNOLlIpKlj1Hp5DpktjLIde+HyZ8KzgMAQwCORpgxxOp1XddyF4Z60mhQBzaeoUtjnNiVS7JosgaLIV4lhGFJUiUAjRl+saGBUhiNLksiCpwVQmJ61gVIuqZHGoQbJDabTFm8PRIcOr7jrMISfnOboIHofo+ouui4Rk+GESUGiWDg2jYvsLiNGucF0R8DEPk+L5vixyHRKh7GJFxaRYXxeEEeK6icEoxzYn6BErlUlhwRA4hgGxrobHo4qdkonYpDsF7GYoSqeEAA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QFsCGAzAlqgxAZQBUBBAJQIG0AGAXUVAAcB7WTAF00YDs6QAPRACwAmADQgAnogCMANgCcAOgDsSygA4AzDM0CNQmRoC+hsWiyoFsVqgBOrfAFECBAJIA5AOJVaSEExbsXDz8CEJKagqyMjJKQnJqAKyUGgJSYpKhlJQKqdGxWTIJSglyAsamGNiWYKzsnFA4AAoAMkQAmu5eNDz+bBzcviEJohKIMgIJCuMJagYTApThSuUgZlX0ADao4pj1ON49zH1Bg4hqchrKUmpK8lJKusky6WMyUpFCSUJqAhNJiys1hZNttdlAFJxMFAABb2ABiLhIhAAIu0Dr5eoEBqAQn8FJQLrdCnEZJRri8EEopAJlHEhPc1PSNGSjCZVpVgVsdvUIVDYTgiHCCA4SAikQRUW10QwjljgoIEpMCRoicM5KTyaMEGopNkNAlhNSFnoNPrARyFCDueCINsBUKRWLCG4XB4ABIUboY2X9eWhIQ0jRSANyBL6z5yRYaCkGyYJGSfFVqRYG5Lm8wKMCcCD7L0ygK+06hcKRaIxOKJZKpCk60t5a43ORCdRSYxsziMCBwHhAw4Fk44xAAWmeWqHkzkk6n0+nrIqGastlYfeO2L40jDCk0puZTJJ0a1UibW53AlDahuF-TVVgNTqUBXcqLCxkChVZ8SR4M+kWFOb2TkKJGVkDQbgTGRr05UF6kfQtBwQWQIiDEMw2GEpFlHDIJiQ88iiUQl8KESDLS5MFeRhZdvX7NcQnpV9kLPVCIwwilokUG4ki0AlK3GYirTIyEKIULAbCsNw+Uo-NVz9b5siUDRz10YopCPBIKWKJR8VSKk3mDfQHj40ieUE2EFAwVgwBsOFMFE1hxIo2CB3XUJxjfYNGPDdDbhrKQ41yARCnjFNDOgm1tkcmixn0HJKAMdQmwEFQVNYpIphDTRhlAo85BC60FFtcRhJsqxkXCqjpKLGIaRfZlzgDJK0i1eTNPw+51CEOJVCEOd2QzfieQKsz0AsqzitYUqMikp94KqmK4rqxKqUajJ8NfOJ7m6ycBE0ANiKzCAIr9XVTQUb53O200snUVjbjfA0OqrdQ20MIA */
     id: "mafia",
-    initial: "setting",
+    initial: "start",
     predictableActionArguments: true,
     schema: {
       context: {} as Context,
@@ -41,6 +41,13 @@ const mafiaeMachine = createMachine(
     },
     context: initialContext,
     states: {
+      start: {
+        on: {
+          SETTING: {
+            target: "setting",
+          },
+        },
+      },
       setting: {
         on: {
           PLAYING: {
@@ -50,7 +57,7 @@ const mafiaeMachine = createMachine(
         },
       },
       playing: {
-        always: [{ target: "done", cond: "isDone", actions: ["setWinner"] }],
+        always: [{ target: "end", cond: "isEnd", actions: ["setWinner"] }],
         initial: "night",
         states: {
           night: {
@@ -84,8 +91,12 @@ const mafiaeMachine = createMachine(
           },
         },
       },
-      done: {
-        type: "final",
+      end: {},
+    },
+    on: {
+      START: {
+        target: "start",
+        actions: ["clear"],
       },
     },
   },
@@ -106,8 +117,8 @@ const mafiaeMachine = createMachine(
             context.mafia.alive = event.mafia
             for (const user of event.mafia) userRoleMap.set(user, "mafia")
           } else {
-            context.citizen[role].alive = event[role] ?? []
-            for (const user of event[role] ?? []) userRoleMap.set(user, role)
+            context.citizen[role].alive = event[role]
+            for (const user of event[role]) userRoleMap.set(user, role)
           }
         }
       }),
@@ -153,19 +164,22 @@ const mafiaeMachine = createMachine(
       setWinner: assign((context) => {
         context.winner = context.mafia.alive.length ? "mafia" : "citizen"
       }),
+      clear: _assign(() => {
+        userRoleMap.clear()
+        return initialContext
+      }),
     },
     guards: {
-      isDone: ({ mafia, citizen }) => {
+      isEnd: ({ mafia, citizen }) => {
+        const { normal, doctor, police } = citizen
         const diedLen =
           mafia.died.length +
-          citizen.normal.died.length +
-          citizen.doctor.died.length +
-          citizen.police.died.length
+          normal.died.length +
+          doctor.died.length +
+          police.died.length
         if (!diedLen) return false
         const citizensAliveLen =
-          citizen.normal.alive.length +
-          citizen.doctor.alive.length +
-          citizen.police.alive.length
+          normal.alive.length + doctor.alive.length + police.alive.length
 
         // 살아있는 마피아와 시민의 수가 같아지거나, 살아있는 마피아가 모두 죽은 경우
         return mafia.alive.length >= citizensAliveLen || !mafia.alive.length

@@ -8,6 +8,7 @@ import RoleSelectionInput from "./RoleSelectionInput"
 import { userNumberByRole } from "@/lib/setting"
 import MainContentLayout from "@/components/layout/MainContentLayout"
 import useButton from "@/hooks/useButton"
+import useStepTransitions from "@/hooks/useStepTransitions"
 
 interface SelectedUsersByRoles {
   mafia: string[]
@@ -25,6 +26,7 @@ function FirstNight() {
       doctor: [],
       police: [],
     })
+  const { sendFirstDay } = useStepTransitions()
   const { isRequired, setIsRequired, onButtonClick, isLoading } = useButton()
 
   const changeUsers = (
@@ -48,15 +50,12 @@ function FirstNight() {
   )
 
   const handleButtonClick = () => {
-    mafiaServices.send("FIRSTDAY", {
-      mafia: selectedUsersByRoles.mafia,
+    const { mafia, police, doctor } = selectedUsersByRoles
+    sendFirstDay({
+      mafia,
       normal: users.filter((user) => !selectedUsers.includes(user)),
-      police: roles.includes("police")
-        ? selectedUsersByRoles.police
-        : undefined,
-      doctor: roles.includes("doctor")
-        ? selectedUsersByRoles.doctor
-        : undefined,
+      police,
+      doctor,
     })
   }
 

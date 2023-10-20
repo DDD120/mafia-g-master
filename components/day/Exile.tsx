@@ -5,24 +5,24 @@ import Script from "../Script"
 import Button from "../button/Button"
 import SelectInput from "../SelectInput"
 import { ChangeEvent, useEffect, useState } from "react"
-import { useMafiaContext } from "@/providers/MafiaProvider"
 import { useParams } from "next/navigation"
 import UsersStatsBoardButton from "../UsersStatsBoard/UsersStatsBoardButton"
 import MainContentLayout from "../layout/MainContentLayout"
 import useButton from "@/hooks/useButton"
+import useStepTransitions from "@/hooks/useStepTransitions"
 
 function Exile() {
   const [selectedUser, setSelectedUesr] = useState<string | null>(null)
-  const mafiaServices = useMafiaContext()
   const { aliveUsers } = useAliveUsers()
   const { days } = useParams()
+  const { sendAfterFirstNight } = useStepTransitions()
   const { isRequired, setIsRequired, onButtonClick, isLoading } = useButton()
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSelectedUesr(e.target.value)
   }
   const handleButtonClick = () => {
-    mafiaServices.send("AFTERFIRSTNIGHT", {
+    sendAfterFirstNight({
       exiledUser: selectedUser,
     })
   }
