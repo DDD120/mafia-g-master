@@ -21,6 +21,7 @@ const serif = Noto_Serif_KR({
 export const metadata: Metadata = {
   title: "마피아 G 마스터",
   description: "오프라인 마피아 게임 진행 가이드",
+  manifest: "/manifest.json",
 }
 
 function RootLayout({ children }: { children: React.ReactNode }) {
