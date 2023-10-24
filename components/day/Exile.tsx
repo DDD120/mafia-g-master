@@ -14,7 +14,9 @@ import useStepTransitions from "@/hooks/useStepTransitions"
 function Exile() {
   const [selectedUser, setSelectedUesr] = useState<string | null>(null)
   const { aliveUsers } = useAliveUsers()
-  const { days } = useParams()
+  const { days } = useParams() as {
+    days: string
+  }
   const { sendAfterFirstNight } = useStepTransitions()
   const { isRequired, setIsRequired, onButtonClick, isLoading } = useButton()
 

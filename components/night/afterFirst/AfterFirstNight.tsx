@@ -27,7 +27,9 @@ function AfterFirstNight() {
   })
   const { aliveUsers, aliveMafia, aliveCitizens, alivePolice, aliveDoctor } =
     useAliveUsers()
-  const { days } = useParams()
+  const { days } = useParams() as {
+    days: string
+  }
   const { sendAfterFirstDay } = useStepTransitions()
   const { isRequired, setIsRequired, onButtonClick, isLoading } = useButton()
 
