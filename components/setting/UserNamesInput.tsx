@@ -1,7 +1,13 @@
 import CreatableSelect from "react-select/creatable"
 import { FaBan, FaCheck } from "react-icons/fa"
-import { KeyboardEvent } from "react"
-import { MultiValue, InputProps, components, GroupBase } from "react-select"
+import { KeyboardEvent, useEffect, useRef } from "react"
+import {
+  MultiValue,
+  InputProps,
+  components,
+  GroupBase,
+  SelectInstance,
+} from "react-select"
 import { Option, selectThema } from "@/lib/setting"
 
 interface Props {
@@ -29,6 +35,12 @@ function UserNamesInput({
   handleNamesInputChange,
   userInputValue,
 }: Props) {
+  const inputRef = useRef<SelectInstance<Option<string>, true> | null>(null)
+
+  useEffect(() => {
+    if (isRequired) inputRef.current?.blur()
+  }, [isRequired])
+
   return (
     <>
       <p className="text-xl flex items-center">
@@ -40,6 +52,7 @@ function UserNamesInput({
         )}
       </p>
       <CreatableSelect
+        ref={inputRef}
         id="names"
         instanceId="names"
         components={{ Input, DropdownIndicator: null }}
