@@ -60,6 +60,7 @@ function FirstNight() {
   }
 
   useEffect(() => {
+    if (!users.length) return
     const {
       mafia: mafiaCount,
       doctor: doctorCount,

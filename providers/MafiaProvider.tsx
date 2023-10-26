@@ -29,6 +29,7 @@ export function MafiaProvider({ children }: Props) {
   useEffect(() => {
     const reset = () => {
       window.addEventListener("popstate", () => {
+        router.push("/")
         mafiaService.send("START")
       })
     }
@@ -37,7 +38,7 @@ export function MafiaProvider({ children }: Props) {
     return () => {
       window.removeEventListener("popstate", reset)
     }
-  }, [mafiaService])
+  }, [mafiaService, router])
 
   return (
     <MafiaContext.Provider value={mafiaService}>
