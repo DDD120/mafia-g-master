@@ -31,7 +31,7 @@ const initialContext: Context = {
 
 const mafiaeMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QFsCGAzAlqgxAZQBUBBAJQIG0AGAXUVAAcB7WTAF00YDs6QAPRACwAmADQgAnogCMANgCcAOgDsSygA4AzDM0CNQmRoC+hsWiyoFsVqgBOrfAFECBAJIA5AOJVaSEExbsXDz8CEJKagqyMjJKQnJqAKyUGgJSYpKhlJQKqdGxWTIJSglyAsamGNiWYKzsnFA4AAoAMkQAmu5eNDz+bBzcviEJohKIMgIJCuMJagYTApThSuUgZlX0ADao4pj1ON49zH1Bg4hqchrKUmpK8lJKusky6WMyUpFCSUJqAhNJiys1hZNttdlAFJxMFAABb2ABiLhIhAAIu0Dr5eoEBqAQn8FJQLrdCnEZJRri8EEopAJlHEhPc1PSNGSjCZVpVgVsdvUIVDYTgiHCCA4SAikQRUW10QwjljgoIEpMCRoicM5KTyaMEGopNkNAlhNSFnoNPrARyFCDueCINsBUKRWLCG4XB4ABIUboY2X9eWhIQ0jRSANyBL6z5yRYaCkGyYJGSfFVqRYG5Lm8wKMCcCD7L0ygK+06hcKRaIxOKJZKpCk60t5a43ORCdRSYxsziMCBwHhAw4Fk44xAAWmeWqHkzkk6n0+nrIqGastlYfeO2L40jDCk0puZTJJ0a1UibW53AlDahuF-TVVgNTqUBXcqLCxkChVZ8SR4M+kWFOb2TkKJGVkDQbgTGRr05UF6kfQtBwQWQIiDEMw2GEpFlHDIJiQ88iiUQl8KESDLS5MFeRhZdvX7NcQnpV9kLPVCIwwilokUG4ki0AlK3GYirTIyEKIULAbCsNw+Uo-NVz9b5siUDRz10YopCPBIKWKJR8VSKk3mDfQHj40ieUE2EFAwVgwBsOFMFE1hxIo2CB3XUJxjfYNGPDdDbhrKQ41yARCnjFNDOgm1tkcmixn0HJKAMdQmwEFQVNYpIphDTRhlAo85BC60FFtcRhJsqxkXCqjpKLGIaRfZlzgDJK0i1eTNPw+51CEOJVCEOd2QzfieQKsz0AsqzitYUqMikp94KqmK4rqxKqUajJ8NfOJ7m6ycBE0ANiKzCAIr9XVTQUb53O200snUVjbjfA0OqrdQ20MIA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QFsCGAzAlqgxAZQBUBBAJQIG0AGAXUVAAcB7WTAF00YDs6QAPRACwAmADQgAnogAcARgB0MgGzKA7JUqKVAZiGKpigL4GxaLKjmxWqAE6t8AUQIEAkgDkA4lVpIQTFuy4efgQhNTkAVnVKGXCATh0BcIEVATFJBBlKITktWPCpLSlwlRUhIS0VGSMTDGwLMFZ2TigcAAUAGSIATTdPGh4-Ng5uH2Dw0QlEJJU5bVjFShVFYoFYjWqQUzr6ABtUcUxmnC8B5iHA0elYqVmZKRLFIXCVorSpxQEI8Zkf5UoKwobLbmXb7Q5QOScTBQAAWrDkWGsllc0LhOAAYs4SIQACLdE4+QYBEagYICBZySjxEoxASUAr0xRvBALT5PdR0rTqJQxIG1EF7A7NSGo+EYVhgazozBI1go2F2Ijogj2EiY7EEPFdAkMM7EoKCClUiqVJL0rn6ZmKWKxOT3SJlGRCeYxLR8sxyUFCiEQfY4JUqtVYwiuZzuAASFH6hL1wwNISEny0Tsi8RkKWS6eZiTZsSUUkoq1KicLRmMIE4jAgcB4wNO-jjlwQAFomZMW+E5Dbuz3e27y8CLFZbPXziS+IgYvIlKpchm9FpwszMtkpHkCkUSmUKlUB-z6o1waP9U3cjc1AV8mU9Gvycusnb14VisWd+7toKjzGGxdSZO9DkKbGumAiZiozJaJoCjspkwjXLEpTvgKYLClCCrHo2f4hEogHsmmGaVOB7YvnIoT0pEmhFFSQhIZ6n6oaKCIysiooYb+E4IFy2QzposRkbIxRaFaHxyAIFTjIsiQFIou41B6XrgiKCpyOKkrSrK8pwmx47BLoSZAfhoGEcyxZduJJZSPoToqLRCnCr66S6j+OmIIoyaiRoQhFACMgITIzIkfxFEqFRfG2fRPr7Exso4vs2nxrxHmPN52i+ZUwmfGJKgSSk+SQbJmz7nZkXiCp6ASlKzGsLFjm+LG7HBIldLJeEPl+SZZRmdlFlWaEtFgJwEDxU2mSLnIMnkr5XJGa8xFSJ8-xOpoTx8c8ZYGEAA */
     id: "mafia",
     initial: "start",
     predictableActionArguments: true,
@@ -61,20 +61,24 @@ const mafiaeMachine = createMachine(
         initial: "night",
         states: {
           night: {
-            on: {
-              FIRSTDAY: {
-                target: "day.firstDay",
-                actions: ["setUserByRole"],
-              },
-              AFTERFIRSTDAY: {
-                target: "day.afterFirstDay",
-                actions: ["pointOut"],
-              },
-            },
             initial: "firstNight",
             states: {
-              firstNight: {},
-              afterFirstNight: {},
+              firstNight: {
+                on: {
+                  FIRSTDAY: {
+                    target: "#mafia.playing.day.firstDay",
+                    actions: ["setUserByRole"],
+                  },
+                },
+              },
+              afterFirstNight: {
+                on: {
+                  AFTERFIRSTDAY: {
+                    target: "#mafia.playing.day.afterFirstDay",
+                    actions: ["pointOut"],
+                  },
+                },
+              },
             },
           },
           day: {
